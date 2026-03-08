@@ -44,6 +44,9 @@ export interface AboutContent {
 
 export interface ContactSettings {
   whatsappNumber: string;
+  email: string;
+  phone: string;
+  address: string;
 }
 
 export interface SiteColors {

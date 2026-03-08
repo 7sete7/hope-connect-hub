@@ -80,6 +80,9 @@ export const defaultSiteData: SiteData = {
     valuesImage: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=600&h=400&fit=crop',
   },
   contact: {
-    whatsappNumber: '5511999999999',
+    whatsappNumber: '5551999999999',
+    email: 'contato@cooperativavida.org.br',
+    phone: '(51) 99999-9999',
+    address: 'Av. Paulista, 1000 - São Paulo, SP',
   },
 };

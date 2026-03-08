@@ -19,39 +19,45 @@ const contactSchema = z.object({
   message: z.string().trim().min(1, 'Mensagem é obrigatória').max(1000),
 });
 
-const contactInfo = [
-  {
-    icon: MessageCircle,
-    label: 'WhatsApp',
-    value: '5511999999999',
-    color: 'bg-accent/10 text-accent',
-  },
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'contato@cooperativavida.org.br',
-    color: 'bg-primary/10 text-primary',
-  },
-  {
-    icon: Phone,
-    label: 'Telefone',
-    value: '(11) 99999-9999',
-    color: 'bg-secondary/10 text-secondary',
-  },
-  {
-    icon: MapPin,
-    label: 'Endereço',
-    value: 'Av. Paulista, 1000 - São Paulo, SP',
-    color: 'bg-primary/10 text-primary',
-  },
-];
-
 export default function Contact() {
   const { data } = useSite();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const contact = data.contact;
+
+  const contactInfo = [
+    {
+      icon: MessageCircle,
+      label: 'WhatsApp',
+      value: contact.whatsappNumber,
+      href: `https://wa.me/+${contact.whatsappNumber.replace(/\D/g, '')}`,
+      color: 'bg-accent text-accent-foreground',
+    },
+    {
+      icon: Mail,
+      label: 'Email',
+      value: contact.email,
+      href: `mailto:${contact.email}`,
+      color: 'bg-primary text-primary-foreground',
+    },
+    {
+      icon: Phone,
+      label: 'Telefone',
+      value: contact.phone,
+      href: `tel:${contact.phone.replace(/\D/g, '')}`,
+      color: 'bg-secondary/15 text-secondary',
+    },
+    {
+      icon: MapPin,
+      label: 'Endereço',
+      value: contact.address,
+      href: undefined,
+      color: 'bg-primary/10 text-primary',
+    },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,20 +97,27 @@ export default function Contact() {
                 </p>
 
                 <div className="flex flex-col gap-4">
-                  {contactInfo.map((item) => (
-                    <div
-                      key={item.label}
-                      className="flex items-center gap-4 bg-card rounded-2xl p-5 border border-border"
-                    >
-                      <div className={`w-12 h-12 rounded-xl ${item.color} flex items-center justify-center flex-shrink-0`}>
-                        <item.icon className="w-5 h-5" />
+                  {contactInfo.map((item) => {
+                    const content = (
+                      <div className="flex items-center gap-4 bg-card rounded-2xl p-5 border border-border hover:shadow-md transition-shadow">
+                        <div className={`w-12 h-12 rounded-xl ${item.color} flex items-center justify-center flex-shrink-0`}>
+                          <item.icon className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-foreground">{item.label}</p>
+                          <p className="text-muted-foreground text-sm">{item.value}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-semibold text-foreground">{item.label}</p>
-                        <p className="text-muted-foreground text-sm">{item.value}</p>
-                      </div>
-                    </div>
-                  ))}
+                    );
+
+                    return item.href ? (
+                      <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer">
+                        {content}
+                      </a>
+                    ) : (
+                      <div key={item.label}>{content}</div>
+                    );
+                  })}
                 </div>
               </div>
             </ScrollFadeIn>
@@ -117,60 +130,28 @@ export default function Contact() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="name">Nome *</Label>
-                      <Input
-                        id="name"
-                        value={form.name}
-                        onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                        placeholder="Seu nome"
-                        className="mt-1.5"
-                      />
+                      <Input id="name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Seu nome" className="mt-1.5" />
                       {errors.name && <p className="text-sm text-destructive mt-1">{errors.name}</p>}
                     </div>
                     <div>
                       <Label htmlFor="email">Email *</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={form.email}
-                        onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                        placeholder="seu@email.com"
-                        className="mt-1.5"
-                      />
+                      <Input id="email" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="seu@email.com" className="mt-1.5" />
                       {errors.email && <p className="text-sm text-destructive mt-1">{errors.email}</p>}
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="phone">Telefone</Label>
-                      <Input
-                        id="phone"
-                        value={form.phone}
-                        onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                        placeholder="(11) 99999-9999"
-                        className="mt-1.5"
-                      />
+                      <Input id="phone" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="(11) 99999-9999" className="mt-1.5" />
                     </div>
                     <div>
                       <Label htmlFor="subject">Assunto</Label>
-                      <Input
-                        id="subject"
-                        value={form.subject}
-                        onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
-                        placeholder="Assunto da mensagem"
-                        className="mt-1.5"
-                      />
+                      <Input id="subject" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} placeholder="Assunto da mensagem" className="mt-1.5" />
                     </div>
                   </div>
                   <div>
                     <Label htmlFor="message">Mensagem *</Label>
-                    <Textarea
-                      id="message"
-                      value={form.message}
-                      onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-                      placeholder="Escreva sua mensagem..."
-                      rows={5}
-                      className="mt-1.5"
-                    />
+                    <Textarea id="message" value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="Escreva sua mensagem..." rows={5} className="mt-1.5" />
                     {errors.message && <p className="text-sm text-destructive mt-1">{errors.message}</p>}
                   </div>
                   <Button type="submit" disabled={loading} className="w-full gap-2 py-6 text-base">
