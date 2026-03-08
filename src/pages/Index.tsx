@@ -105,8 +105,8 @@ export default function Index() {
       </section>
 
       {/* Events Section */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
+      <section className="py-24 bg-background">
+        <div className="container mx-auto px-6">
           <ScrollFadeIn>
             <div className="text-center mb-12">
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-3">
@@ -122,7 +122,7 @@ export default function Index() {
             {publishedEvents.map((event, i) => (
               <ScrollFadeIn key={event.id} delay={i * 0.15}>
                 <Link to={`/eventos/${event.id}`}>
-                  <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 rounded-2xl">
                     <div className="aspect-[3/2] overflow-hidden">
                       <img
                         src={event.image}
@@ -162,8 +162,8 @@ export default function Index() {
       </section>
 
       {/* Partners Section */}
-      <section className="py-20 bg-muted/50">
-        <div className="container mx-auto px-4">
+      <section className="py-24 bg-muted/50">
+        <div className="container mx-auto px-6">
           <ScrollFadeIn>
             <div className="text-center mb-12">
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-3">
@@ -178,7 +178,7 @@ export default function Index() {
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 mb-10">
             {data.partners.map((partner, i) => (
               <ScrollFadeIn key={partner.id} delay={(i % 6) * 0.05}>
-                <div className="group relative bg-card rounded-xl p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                <div className="group relative bg-card rounded-2xl p-5 flex flex-col items-center gap-3 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                   <img
                     src={partner.logo}
                     alt={partner.name}
@@ -188,7 +188,7 @@ export default function Index() {
                     {partner.name}
                   </span>
                   {/* Hover overlay */}
-                  <div className="absolute inset-0 rounded-xl bg-foreground/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+                  <div className="absolute inset-0 rounded-2xl bg-foreground/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
                     {partner.whatsapp && (
                       <a
                         href={`https://wa.me/${partner.whatsapp}`}
