@@ -26,14 +26,6 @@ CREATE TABLE IF NOT EXISTS partners (
   website TEXT
 );
 
-CREATE TABLE IF NOT EXISTS associates (
-  id TEXT PRIMARY KEY,
-  name TEXT NOT NULL,
-  logo TEXT NOT NULL,
-  whatsapp TEXT,
-  website TEXT
-);
-
 CREATE TABLE IF NOT EXISTS about (
   id INTEGER PRIMARY KEY CHECK (id = 1),
   intro TEXT NOT NULL DEFAULT '',
