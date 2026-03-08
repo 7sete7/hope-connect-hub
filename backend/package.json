@@ -1,0 +1,14 @@
+{
+  "name": "cooperativa-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "start": "bun run src/index.ts",
+    "migrate": "bun run migrate.ts",
+    "seed": "bun run seed.ts"
+  },
+  "dependencies": {
+    "jose": "^5.2.0"
+  }
+}

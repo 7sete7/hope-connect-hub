@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=/api
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - JWT_SECRET=${JWT_SECRET:-cooperativa-secret-change-in-production}
+      - DB_PATH=/app/data/cooperativa.sqlite
+      - UPLOAD_DIR=/app/uploads
+      - CORS_ORIGINS=http://localhost,http://localhost:80
+    volumes:
+      - db-data:/app/data
+      - uploads:/app/uploads
+
+volumes:
+  db-data:
+  uploads:
