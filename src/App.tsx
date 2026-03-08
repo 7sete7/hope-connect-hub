@@ -3,7 +3,26 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { SiteProvider } from "@/contexts/SiteContext";
+import { Layout } from "@/components/layout/Layout";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
+import About from "./pages/About";
+import Events from "./pages/Events";
+import EventDetail from "./pages/EventDetail";
+import Associates from "./pages/Associates";
+import Contact from "./pages/Contact";
+import Login from "./pages/Login";
+import AdminLayout from "./pages/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import AdminCarousel from "./pages/admin/AdminCarousel";
+import AdminEvents from "./pages/admin/AdminEvents";
+import AdminPartners from "./pages/admin/AdminPartners";
+import AdminAssociates from "./pages/admin/AdminAssociates";
+import AdminAbout from "./pages/admin/AdminAbout";
+import AdminContact from "./pages/admin/AdminContact";
+import AdminColors from "./pages/admin/AdminColors";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -11,15 +30,42 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <SiteProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Public */}
+              <Route element={<Layout />}>
+                <Route path="/" element={<Index />} />
+                <Route path="/quem-somos" element={<About />} />
+                <Route path="/eventos" element={<Events />} />
+                <Route path="/eventos/:id" element={<EventDetail />} />
+                <Route path="/associados" element={<Associates />} />
+                <Route path="/contato" element={<Contact />} />
+              </Route>
+
+              {/* Auth */}
+              <Route path="/login" element={<Login />} />
+
+              {/* Admin */}
+              <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+                <Route index element={<Dashboard />} />
+                <Route path="carrossel" element={<AdminCarousel />} />
+                <Route path="eventos" element={<AdminEvents />} />
+                <Route path="parceiros" element={<AdminPartners />} />
+                <Route path="associados" element={<AdminAssociates />} />
+                <Route path="quem-somos" element={<AdminAbout />} />
+                <Route path="contato" element={<AdminContact />} />
+                <Route path="cores" element={<AdminColors />} />
+              </Route>
+
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </SiteProvider>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
