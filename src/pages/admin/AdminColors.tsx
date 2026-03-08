@@ -97,14 +97,14 @@ function SitePreview({ primary, secondary, accent }: { primary: string; secondar
       </div>
 
       {/* Mini hero */}
-      <div className="relative h-28 bg-gradient-to-br from-gray-800 to-gray-900 flex items-end p-4">
+      <div className="relative h-28 flex items-end p-4" style={{ background: `linear-gradient(135deg, ${p}, ${s})` }}>
         <div>
           <div className="h-2 w-32 rounded bg-white/90 mb-1.5" />
           <div className="h-1.5 w-20 rounded bg-white/50" />
         </div>
         <div className="absolute bottom-3 right-3 flex gap-1">
           {[0, 1, 2].map(i => (
-            <div key={i} className="h-1 rounded-full" style={{ width: i === 0 ? 16 : 4, background: i === 0 ? p : 'rgba(255,255,255,0.4)' }} />
+            <div key={i} className="h-1 rounded-full" style={{ width: i === 0 ? 16 : 4, background: i === 0 ? 'white' : 'rgba(255,255,255,0.4)' }} />
           ))}
         </div>
       </div>
@@ -121,7 +121,10 @@ function SitePreview({ primary, secondary, accent }: { primary: string; secondar
               <div className="h-10 bg-muted" />
               <div className="p-2">
                 <div className="h-1.5 w-full rounded bg-foreground/20 mb-1" />
-                <div className="h-1 w-2/3 rounded bg-muted-foreground/20 mb-2" />
+                <div className="flex items-center gap-1 mb-1.5">
+                  <CalendarDays className="w-2 h-2" style={{ color: a }} />
+                  <div className="h-1 w-2/3 rounded" style={{ background: a, opacity: 0.3 }} />
+                </div>
                 <div className="flex items-center gap-0.5">
                   <span className="text-[8px] font-semibold" style={{ color: p }}>Saiba mais</span>
                   <ArrowRight className="w-2 h-2" style={{ color: p }} />
@@ -131,7 +134,7 @@ function SitePreview({ primary, secondary, accent }: { primary: string; secondar
           ))}
         </div>
 
-        {/* CTA button */}
+        {/* CTA button with primary */}
         <div className="flex justify-center mt-3">
           <div className="flex items-center gap-1 px-3 py-1.5 rounded-full text-white text-[9px] font-semibold" style={{ background: p }}>
             Ver todos os eventos
@@ -142,29 +145,19 @@ function SitePreview({ primary, secondary, accent }: { primary: string; secondar
 
       {/* Mini partners */}
       <div className="px-4 pb-4">
-        <div className="rounded-xl p-3" style={{ background: `linear-gradient(135deg, ${p}08, ${s}08)` }}>
+        <div className="rounded-xl p-3 border border-border">
           <div className="flex items-center justify-center gap-1 mb-2">
             <span className="text-[10px] font-bold text-foreground">Nossos Parceiros</span>
           </div>
           <div className="flex justify-center gap-2 mb-2">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="flex flex-col items-center gap-1">
-                <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
-                  <span className="text-[8px] font-bold text-muted-foreground">P{i}</span>
-                </div>
-                <div className="flex gap-0.5">
-                  <div className="w-3.5 h-3.5 rounded-full flex items-center justify-center" style={{ background: `${p}1a` }}>
-                    <MessageCircle className="w-2 h-2" style={{ color: p }} />
-                  </div>
-                  <div className="w-3.5 h-3.5 rounded-full bg-muted flex items-center justify-center">
-                    <ExternalLink className="w-2 h-2 text-muted-foreground" />
-                  </div>
-                </div>
+              <div key={i} className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
+                <span className="text-[8px] font-bold text-muted-foreground">P{i}</span>
               </div>
             ))}
           </div>
 
-          {/* CTA area */}
+          {/* CTA area with secondary */}
           <div className="flex items-center justify-center gap-2 mt-2">
             <span className="text-[8px] text-foreground font-medium">Quer fazer parte?</span>
             <div className="flex items-center gap-0.5 px-2 py-1 rounded-full text-white text-[8px] font-semibold" style={{ background: s }}>
@@ -172,6 +165,31 @@ function SitePreview({ primary, secondary, accent }: { primary: string; secondar
               <ArrowRight className="w-2 h-2" />
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Accent badge showcase */}
+      <div className="px-4 pb-4">
+        <div className="flex items-center gap-2 justify-center">
+          <div className="px-2 py-0.5 rounded-full text-white text-[8px] font-semibold" style={{ background: a }}>Novo</div>
+          <div className="px-2 py-0.5 rounded-full text-white text-[8px] font-semibold" style={{ background: a }}>Destaque</div>
+          <div className="px-2 py-0.5 rounded-full text-[8px] font-semibold border" style={{ borderColor: a, color: a }}>Em breve</div>
+        </div>
+      </div>
+
+      {/* Color legend */}
+      <div className="px-4 pb-3">
+        <div className="flex justify-center gap-3">
+          {[
+            { color: p, label: 'Primária' },
+            { color: s, label: 'Secundária' },
+            { color: a, label: 'Destaque' },
+          ].map(({ color, label }) => (
+            <div key={label} className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full" style={{ background: color }} />
+              <span className="text-[8px] text-muted-foreground">{label}</span>
+            </div>
+          ))}
         </div>
       </div>
 
