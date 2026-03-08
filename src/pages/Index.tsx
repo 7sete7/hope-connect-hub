@@ -178,7 +178,7 @@ export default function Index() {
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 mb-10">
             {data.partners.map((partner, i) => (
               <ScrollFadeIn key={partner.id} delay={(i % 6) * 0.05}>
-                <div className="group relative bg-card rounded-xl p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                <div className="group relative bg-card rounded-2xl p-5 flex flex-col items-center gap-3 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                   <img
                     src={partner.logo}
                     alt={partner.name}
