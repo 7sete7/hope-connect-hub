@@ -50,7 +50,6 @@ export default function Index() {
           )}
         </AnimatePresence>
 
-        {/* Slide text */}
         <div className="relative h-full flex items-end pb-24 sm:pb-32">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <AnimatePresence mode="wait">
@@ -76,7 +75,6 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Controls */}
         {slides.length > 1 && (
           <>
             <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-all z-10">
@@ -85,8 +83,6 @@ export default function Index() {
             <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-all z-10">
               <ChevronRight className="w-6 h-6" />
             </button>
-
-            {/* Dots */}
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10">
               {slides.map((_, i) => (
                 <button
@@ -189,40 +185,45 @@ export default function Index() {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
             {data.partners.map((partner, i) => (
               <ScrollFadeIn key={partner.id} delay={(i % 6) * 0.05}>
-                <div className="group bg-card rounded-2xl p-4 sm:p-6 border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-500 flex flex-col items-center text-center h-full">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-muted flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
-                    <img
-                      src={partner.logo}
-                      alt={partner.name}
-                      className="w-full h-full object-contain p-2"
-                    />
-                  </div>
-                  <h3 className="font-semibold text-sm text-foreground mb-1 line-clamp-2 leading-tight">
-                    {partner.name}
-                  </h3>
-                  <div className="flex gap-2 mt-auto pt-3">
-                    {partner.whatsapp && (
-                      <a
-                        href={`https://wa.me/${partner.whatsapp}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary/20 transition-colors"
-                        onClick={e => e.stopPropagation()}
-                      >
-                        <MessageCircle className="w-3.5 h-3.5" />
-                      </a>
-                    )}
-                    {partner.website && (
-                      <a
-                        href={partner.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center hover:bg-muted/80 transition-colors"
-                        onClick={e => e.stopPropagation()}
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    )}
+                <div className="group">
+                  <div className="bg-card rounded-2xl p-4 sm:p-6 border border-border hover:border-primary/25 hover:shadow-xl transition-all duration-500 flex flex-col items-center text-center h-full">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-muted flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+                      <img
+                        src={partner.logo}
+                        alt={partner.name}
+                        className="w-full h-full object-contain p-2"
+                      />
+                    </div>
+                    <h3 className="font-semibold text-sm text-foreground mb-1 line-clamp-2 leading-tight">
+                      {partner.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mb-3 line-clamp-2 hidden sm:block">
+                      Parceiro da cooperativa
+                    </p>
+                    <div className="flex gap-2 mt-auto pt-2">
+                      {partner.whatsapp && (
+                        <a
+                          href={`https://wa.me/${partner.whatsapp}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary/20 transition-colors"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <MessageCircle className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                      {partner.website && (
+                        <a
+                          href={partner.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center hover:bg-border transition-colors"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               </ScrollFadeIn>
@@ -231,7 +232,7 @@ export default function Index() {
 
           <ScrollFadeIn>
             <div className="text-center mt-14">
-              <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 sm:p-8">
+              <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-2xl p-6 sm:p-8">
                 <p className="text-foreground font-medium">Quer fazer parte dessa causa?</p>
                 <Link
                   to="/contato"
