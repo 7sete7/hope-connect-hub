@@ -1,49 +1,99 @@
 import { Link } from 'react-router-dom';
-import { Heart, Mail, Phone } from 'lucide-react';
+import { Heart, Mail, Phone, MapPin, Lock, Facebook, Instagram } from 'lucide-react';
 
 export function Footer() {
   return (
     <footer className="bg-foreground text-background">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-                <Heart className="w-4 h-4 text-primary-foreground" />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+                <Heart className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="font-display text-lg font-bold">Cooperativa</span>
+              <span className="font-bold text-lg">Cooperativa Vida Contra o Câncer</span>
             </div>
-            <p className="text-sm opacity-70 leading-relaxed">
+            <p className="text-background/60 text-sm leading-relaxed">
               Unindo empresas na luta contra o câncer. Juntos somos mais fortes.
             </p>
+            <div className="flex gap-3 mt-6">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-background/20 transition-colors"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-background/10 flex items-center justify-center hover:bg-background/20 transition-colors"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+            </div>
           </div>
 
-          {/* Links */}
+          {/* Navigation */}
           <div>
-            <h4 className="font-display font-semibold mb-4">Navegação</h4>
-            <div className="flex flex-col gap-2 text-sm opacity-70">
-              <Link to="/" className="hover:opacity-100 transition-opacity">Início</Link>
-              <Link to="/quem-somos" className="hover:opacity-100 transition-opacity">Quem Somos</Link>
-              <Link to="/eventos" className="hover:opacity-100 transition-opacity">Eventos</Link>
-              <Link to="/associados" className="hover:opacity-100 transition-opacity">Associados</Link>
-              <Link to="/contato" className="hover:opacity-100 transition-opacity">Contato</Link>
-            </div>
+            <h3 className="font-semibold text-sm uppercase tracking-wider mb-4 text-background/60">Navegação</h3>
+            <ul className="space-y-3">
+              <li><Link to="/" className="text-background/60 hover:text-background text-sm transition-colors">Início</Link></li>
+              <li><Link to="/quem-somos" className="text-background/60 hover:text-background text-sm transition-colors">Quem Somos</Link></li>
+              <li><Link to="/eventos" className="text-background/60 hover:text-background text-sm transition-colors">Eventos</Link></li>
+              <li><Link to="/associados" className="text-background/60 hover:text-background text-sm transition-colors">Associados</Link></li>
+              <li><Link to="/contato" className="text-background/60 hover:text-background text-sm transition-colors">Contato</Link></li>
+            </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="font-display font-semibold mb-4">Contato</h4>
-            <div className="flex flex-col gap-2 text-sm opacity-70">
-              <span className="flex items-center gap-2"><Mail className="w-4 h-4" /> contato@cooperativa.org.br</span>
-              <span className="flex items-center gap-2"><Phone className="w-4 h-4" /> (11) 99999-9999</span>
-            </div>
+            <h3 className="font-semibold text-sm uppercase tracking-wider mb-4 text-background/60">Contato</h3>
+            <ul className="space-y-3">
+              <li className="flex items-center gap-2 text-background/60 text-sm">
+                <Mail className="w-4 h-4 flex-shrink-0" />
+                <span>contato@cooperativavida.org.br</span>
+              </li>
+              <li className="flex items-center gap-2 text-background/60 text-sm">
+                <Phone className="w-4 h-4 flex-shrink-0" />
+                <span>(11) 99999-9999</span>
+              </li>
+              <li className="flex items-start gap-2 text-background/60 text-sm">
+                <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <span>Av. Paulista, 1000 - São Paulo, SP</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* CTA */}
+          <div>
+            <h3 className="font-semibold text-sm uppercase tracking-wider mb-4 text-background/60">Faça parte</h3>
+            <p className="text-background/60 text-sm mb-4">
+              Sua empresa pode fazer a diferença. Junte-se à nossa cooperativa.
+            </p>
+            <Link
+              to="/contato"
+              className="inline-flex items-center px-6 py-3 rounded-full text-sm font-semibold text-primary-foreground bg-primary transition-all hover:opacity-90"
+            >
+              Seja Nosso Parceiro
+            </Link>
           </div>
         </div>
+      </div>
 
-        <div className="border-t border-background/10 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs opacity-50">
-          <span>© {new Date().getFullYear()} Cooperativa Contra o Câncer. Todos os direitos reservados.</span>
-          <Link to="/login" className="hover:opacity-100 transition-opacity">
+      <div className="border-t border-background/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-background/40 text-xs">
+            © {new Date().getFullYear()} Cooperativa Vida Contra o Câncer. Todos os direitos reservados.
+          </p>
+          <Link
+            to="/login"
+            className="text-background/30 hover:text-background/50 transition-colors flex items-center gap-1 text-xs"
+          >
+            <Lock className="w-3 h-3" />
             Área administrativa
           </Link>
         </div>
