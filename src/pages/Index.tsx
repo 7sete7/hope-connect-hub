@@ -188,7 +188,7 @@ export default function Index() {
                     {partner.name}
                   </span>
                   {/* Hover overlay */}
-                  <div className="absolute inset-0 rounded-xl bg-foreground/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+                  <div className="absolute inset-0 rounded-2xl bg-foreground/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
                     {partner.whatsapp && (
                       <a
                         href={`https://wa.me/${partner.whatsapp}`}
