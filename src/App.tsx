@@ -11,7 +11,7 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Events from "./pages/Events";
 import EventDetail from "./pages/EventDetail";
-import Associates from "./pages/Associates";
+import Partners from "./pages/Partners";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -19,7 +19,6 @@ import Dashboard from "./pages/admin/Dashboard";
 import AdminCarousel from "./pages/admin/AdminCarousel";
 import AdminEvents from "./pages/admin/AdminEvents";
 import AdminPartners from "./pages/admin/AdminPartners";
-import AdminAssociates from "./pages/admin/AdminAssociates";
 import AdminAbout from "./pages/admin/AdminAbout";
 import AdminContact from "./pages/admin/AdminContact";
 import AdminColors from "./pages/admin/AdminColors";
@@ -42,7 +41,7 @@ const App = () => (
                 <Route path="/quem-somos" element={<About />} />
                 <Route path="/eventos" element={<Events />} />
                 <Route path="/eventos/:id" element={<EventDetail />} />
-                <Route path="/associados" element={<Associates />} />
+                <Route path="/parceiros" element={<Partners />} />
                 <Route path="/contato" element={<Contact />} />
               </Route>
 
@@ -55,7 +54,6 @@ const App = () => (
                 <Route path="carrossel" element={<AdminCarousel />} />
                 <Route path="eventos" element={<AdminEvents />} />
                 <Route path="parceiros" element={<AdminPartners />} />
-                <Route path="associados" element={<AdminAssociates />} />
                 <Route path="quem-somos" element={<AdminAbout />} />
                 <Route path="contato" element={<AdminContact />} />
                 <Route path="cores" element={<AdminColors />} />
