@@ -39,18 +39,6 @@ for (let i = 0; i < 18; i++) {
   );
 }
 
-// Associates
-const insertAssociate = db.prepare("INSERT OR IGNORE INTO associates (id, name, logo, whatsapp, website) VALUES (?, ?, ?, ?, ?)");
-for (let i = 0; i < 12; i++) {
-  insertAssociate.run(
-    String(i + 1),
-    `Associado ${i + 1}`,
-    `https://ui-avatars.com/api/?name=A${i + 1}&background=${colors[i % 6]}&color=fff&size=120&bold=true&format=svg`,
-    "5511999999999",
-    "https://example.com"
-  );
-}
-
 // About
 db.query(`UPDATE about SET 
   intro = ?, intro_image = ?, mission = ?, mission_image = ?,

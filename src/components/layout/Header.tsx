@@ -1,14 +1,15 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Menu, X, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { useLocation } from 'react-router-dom';
 
 const navLinks = [
   { to: '/', label: 'Início' },
   { to: '/quem-somos', label: 'Quem Somos' },
   { to: '/eventos', label: 'Eventos' },
-  { to: '/associados', label: 'Associados' },
+  { to: '/parceiros', label: 'Parceiros' },
   { to: '/contato', label: 'Contato' },
 ];
 
@@ -23,7 +24,7 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const hasBanner = ['/', '/quem-somos', '/eventos', '/associados', '/contato'].includes(location.pathname);
+  const hasBanner = ['/', '/quem-somos', '/eventos', '/parceiros', '/contato'].includes(location.pathname);
   const showTransparent = hasBanner && !scrolled && !mobileOpen;
 
   return (
@@ -49,7 +50,6 @@ export function Header() {
             </span>
           </Link>
 
-          {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map(link => (
               <Link
@@ -70,7 +70,6 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Mobile toggle */}
           <Button
             variant="ghost"
             size="icon"
@@ -82,7 +81,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile nav */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.nav

@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Pencil, Trash2, GripVertical } from 'lucide-react';
+import { ImageInput } from '@/components/admin/ImageInput';
 
 export default function AdminCarousel() {
   const { data, refresh } = useSite();
@@ -50,13 +51,6 @@ export default function AdminCarousel() {
     toast({ title: 'Slide removido' });
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = await api.uploadImage(file);
-    setForm(f => ({ ...f, image: url }));
-  };
-
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -70,23 +64,22 @@ export default function AdminCarousel() {
               <DialogTitle>{editing ? 'Editar Slide' : 'Novo Slide'}</DialogTitle>
             </DialogHeader>
             <div className="flex flex-col gap-4 mt-2">
-              <div>
-                <Label>Imagem (URL ou upload)</Label>
-                <Input value={form.image} onChange={e => setForm(f => ({ ...f, image: e.target.value }))} placeholder="https://..." />
-                <input type="file" accept="image/*" onChange={handleImageUpload} className="mt-2 text-sm" />
-                {form.image && <img src={form.image} alt="Preview" className="mt-2 h-24 w-full object-cover rounded-lg" />}
-              </div>
+              <ImageInput
+                label="Imagem"
+                value={form.image}
+                onChange={url => setForm(f => ({ ...f, image: url }))}
+              />
               <div>
                 <Label>Título (opcional)</Label>
-                <Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
+                <Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} className="mt-1" />
               </div>
               <div>
                 <Label>Subtítulo (opcional)</Label>
-                <Input value={form.subtitle} onChange={e => setForm(f => ({ ...f, subtitle: e.target.value }))} />
+                <Input value={form.subtitle} onChange={e => setForm(f => ({ ...f, subtitle: e.target.value }))} className="mt-1" />
               </div>
               <div>
                 <Label>Ordem</Label>
-                <Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} />
+                <Input type="number" value={form.order} onChange={e => setForm(f => ({ ...f, order: parseInt(e.target.value) || 0 }))} className="mt-1" />
               </div>
               <Button onClick={handleSave}>Salvar</Button>
             </div>

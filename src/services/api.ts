@@ -1,4 +1,4 @@
-import { SiteData, SlideItem, EventItem, PartnerItem, AssociateItem, AboutContent, ContactSettings, SiteColors } from '@/types';
+import { SiteData, SlideItem, EventItem, PartnerItem, AboutContent, ContactSettings, SiteColors } from '@/types';
 import { defaultSiteData } from '@/data/mockData';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
@@ -10,7 +10,16 @@ const STORAGE_KEY = 'cooperativa_site_data';
 function getData(): SiteData {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return JSON.parse(stored);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      // Migration: merge associates into partners if old format
+      if (parsed.associates && Array.isArray(parsed.associates)) {
+        parsed.partners = [...(parsed.partners || []), ...parsed.associates];
+        delete parsed.associates;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+      }
+      return parsed;
+    }
   } catch {}
   return { ...defaultSiteData };
 }
@@ -55,27 +64,23 @@ async function httpForm<T>(path: string, formData: FormData): Promise<T> {
 
 // ─── API implementation ─────────────────────────────────────────────────
 export const api = USE_API ? {
-  // Site Data (aggregate)
   getSiteData: async (): Promise<SiteData> => {
-    const [slides, events, partners, associates, about, contact, colors] = await Promise.all([
+    const [slides, events, partners, about, contact, colors] = await Promise.all([
       http<SlideItem[]>('/api/slides'),
       http<EventItem[]>('/api/events'),
       http<PartnerItem[]>('/api/partners'),
-      http<AssociateItem[]>('/api/associates'),
       http<AboutContent>('/api/about'),
       http<ContactSettings>('/api/contact'),
       http<SiteColors>('/api/colors'),
     ]);
-    return { slides, events, partners, associates, about, contact, colors };
+    return { slides, events, partners, about, contact, colors };
   },
 
-  // Slides
   getSlides: () => http<SlideItem[]>('/api/slides'),
   createSlide: (slide: Omit<SlideItem, 'id'>) => http<SlideItem>('/api/slides', { method: 'POST', body: JSON.stringify(slide) }),
   updateSlide: (id: string, updates: Partial<SlideItem>) => http<SlideItem>(`/api/slides/${id}`, { method: 'PUT', body: JSON.stringify(updates) }),
   deleteSlide: (id: string) => http<void>(`/api/slides/${id}`, { method: 'DELETE' }),
 
-  // Events
   getEvents: () => http<EventItem[]>('/api/events'),
   getPublishedEvents: () => http<EventItem[]>('/api/events?status=published'),
   getEvent: async (id: string) => http<EventItem | undefined>(`/api/events/${id}`),
@@ -83,31 +88,20 @@ export const api = USE_API ? {
   updateEvent: (id: string, updates: Partial<EventItem>) => http<EventItem>(`/api/events/${id}`, { method: 'PUT', body: JSON.stringify(updates) }),
   deleteEvent: (id: string) => http<void>(`/api/events/${id}`, { method: 'DELETE' }),
 
-  // Partners
   getPartners: () => http<PartnerItem[]>('/api/partners'),
   createPartner: (partner: Omit<PartnerItem, 'id'>) => http<PartnerItem>('/api/partners', { method: 'POST', body: JSON.stringify(partner) }),
   updatePartner: (id: string, updates: Partial<PartnerItem>) => http<PartnerItem>(`/api/partners/${id}`, { method: 'PUT', body: JSON.stringify(updates) }),
   deletePartner: (id: string) => http<void>(`/api/partners/${id}`, { method: 'DELETE' }),
 
-  // Associates
-  getAssociates: () => http<AssociateItem[]>('/api/associates'),
-  createAssociate: (associate: Omit<AssociateItem, 'id'>) => http<AssociateItem>('/api/associates', { method: 'POST', body: JSON.stringify(associate) }),
-  updateAssociate: (id: string, updates: Partial<AssociateItem>) => http<AssociateItem>(`/api/associates/${id}`, { method: 'PUT', body: JSON.stringify(updates) }),
-  deleteAssociate: (id: string) => http<void>(`/api/associates/${id}`, { method: 'DELETE' }),
-
-  // About
   getAbout: () => http<AboutContent>('/api/about'),
   updateAbout: (updates: Partial<AboutContent>) => http<AboutContent>('/api/about', { method: 'PUT', body: JSON.stringify(updates) }),
 
-  // Contact
   getContactSettings: () => http<ContactSettings>('/api/contact'),
   updateContactSettings: (updates: Partial<ContactSettings>) => http<ContactSettings>('/api/contact', { method: 'PUT', body: JSON.stringify(updates) }),
 
-  // Colors
   getColors: () => http<SiteColors>('/api/colors'),
   updateColors: (updates: Partial<SiteColors>) => http<SiteColors>('/api/colors', { method: 'PUT', body: JSON.stringify(updates) }),
 
-  // Auth
   login: async (email: string, password: string): Promise<{ token: string }> => {
     const result = await http<{ token: string }>('/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
     localStorage.setItem('auth_token', result.token);
@@ -118,11 +112,9 @@ export const api = USE_API ? {
   },
   isAuthenticated: (): boolean => !!localStorage.getItem('auth_token'),
 
-  // Contact form
   sendContactMessage: (data: { name: string; email: string; phone: string; message: string }) =>
     http<void>('/api/contact/message', { method: 'POST', body: JSON.stringify(data) }),
 
-  // Image upload
   uploadImage: async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append('file', file);
@@ -130,7 +122,7 @@ export const api = USE_API ? {
     return result.url;
   },
 } : {
-  // ─── localStorage fallback (original implementation) ──────────────────
+  // ─── localStorage fallback ──────────────────
   getSiteData: async (): Promise<SiteData> => getData(),
 
   getSlides: async (): Promise<SlideItem[]> => getData().slides.sort((a, b) => a.order - b.order),
@@ -198,28 +190,6 @@ export const api = USE_API ? {
   deletePartner: async (id: string): Promise<void> => {
     const data = getData();
     data.partners = data.partners.filter(p => p.id !== id);
-    saveData(data);
-  },
-
-  getAssociates: async (): Promise<AssociateItem[]> => getData().associates,
-  createAssociate: async (associate: Omit<AssociateItem, 'id'>): Promise<AssociateItem> => {
-    const data = getData();
-    const newAssociate = { ...associate, id: generateId() };
-    data.associates.push(newAssociate);
-    saveData(data);
-    return newAssociate;
-  },
-  updateAssociate: async (id: string, updates: Partial<AssociateItem>): Promise<AssociateItem> => {
-    const data = getData();
-    const idx = data.associates.findIndex(a => a.id === id);
-    if (idx === -1) throw new Error('Associado não encontrado');
-    data.associates[idx] = { ...data.associates[idx], ...updates };
-    saveData(data);
-    return data.associates[idx];
-  },
-  deleteAssociate: async (id: string): Promise<void> => {
-    const data = getData();
-    data.associates = data.associates.filter(a => a.id !== id);
     saveData(data);
   },
 

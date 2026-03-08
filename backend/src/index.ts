@@ -1,7 +1,6 @@
 import { handleSlides } from "./routes/slides";
 import { handleEvents } from "./routes/events";
 import { handlePartners } from "./routes/partners";
-import { handleAssociates } from "./routes/associates";
 import { handleAbout } from "./routes/about";
 import { handleContact } from "./routes/contact";
 import { handleColors } from "./routes/colors";
@@ -35,7 +34,6 @@ function route(pathname: string): ((req: Request) => Promise<Response>) | null {
   if (pathname.startsWith("/api/slides")) return handleSlides;
   if (pathname.startsWith("/api/events")) return handleEvents;
   if (pathname.startsWith("/api/partners")) return handlePartners;
-  if (pathname.startsWith("/api/associates")) return handleAssociates;
   if (pathname.startsWith("/api/about")) return handleAbout;
   if (pathname.startsWith("/api/contact")) return handleContact;
   if (pathname.startsWith("/api/colors")) return handleColors;
@@ -50,12 +48,10 @@ Bun.serve({
     const url = new URL(req.url);
     const origin = req.headers.get("Origin");
 
-    // Handle CORS preflight
     if (req.method === "OPTIONS") {
       return withCors(new Response(null, { status: 204 }), origin);
     }
 
-    // Serve uploaded files
     if (url.pathname.startsWith("/uploads/")) {
       const filePath = resolve(UPLOAD_DIR, url.pathname.slice("/uploads/".length));
       const file = Bun.file(filePath);
@@ -65,7 +61,6 @@ Bun.serve({
       return withCors(Response.json({ error: "Arquivo não encontrado" }, { status: 404 }), origin);
     }
 
-    // Route API requests
     const handler = route(url.pathname);
     if (handler) {
       try {
@@ -77,7 +72,6 @@ Bun.serve({
       }
     }
 
-    // Health check
     if (url.pathname === "/api/health") {
       return withCors(Response.json({ status: "ok", timestamp: new Date().toISOString() }), origin);
     }

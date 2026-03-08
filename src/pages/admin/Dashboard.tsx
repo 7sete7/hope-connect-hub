@@ -1,6 +1,6 @@
 import { useSite } from '@/contexts/SiteContext';
 import { Card, CardContent } from '@/components/ui/card';
-import { CalendarDays, Handshake, Users, Image } from 'lucide-react';
+import { CalendarDays, Handshake, Image } from 'lucide-react';
 
 export default function Dashboard() {
   const { data } = useSite();
@@ -9,13 +9,12 @@ export default function Dashboard() {
     { label: 'Slides', value: data.slides.length, icon: Image, color: 'text-primary' },
     { label: 'Eventos', value: data.events.length, icon: CalendarDays, color: 'text-secondary' },
     { label: 'Parceiros', value: data.partners.length, icon: Handshake, color: 'text-accent' },
-    { label: 'Associados', value: data.associates.length, icon: Users, color: 'text-primary' },
   ];
 
   return (
     <div>
       <h1 className="font-display text-2xl font-bold text-foreground mb-6">Dashboard</h1>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         {stats.map(stat => {
           const Icon = stat.icon;
           return (

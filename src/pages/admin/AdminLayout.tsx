@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { LayoutDashboard, Image, CalendarDays, Users, Handshake, Info, Phone, Palette, LogOut, Heart } from 'lucide-react';
+import { LayoutDashboard, Image, CalendarDays, Handshake, Info, Phone, Palette, LogOut, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const adminLinks = [
@@ -8,7 +8,6 @@ const adminLinks = [
   { to: '/admin/carrossel', label: 'Carrossel', icon: Image },
   { to: '/admin/eventos', label: 'Eventos', icon: CalendarDays },
   { to: '/admin/parceiros', label: 'Parceiros', icon: Handshake },
-  { to: '/admin/associados', label: 'Associados', icon: Users },
   { to: '/admin/quem-somos', label: 'Quem Somos', icon: Info },
   { to: '/admin/contato', label: 'Contato', icon: Phone },
   { to: '/admin/cores', label: 'Cores', icon: Palette },
@@ -25,7 +24,6 @@ export default function AdminLayout() {
 
   return (
     <div className="flex min-h-screen bg-muted/30">
-      {/* Sidebar */}
       <aside className="w-64 bg-card border-r border-border flex flex-col shrink-0">
         <div className="p-4 border-b border-border">
           <div className="flex items-center gap-2">
@@ -62,8 +60,6 @@ export default function AdminLayout() {
           </Button>
         </div>
       </aside>
-
-      {/* Content */}
       <main className="flex-1 overflow-auto">
         <div className="p-6 max-w-5xl">
           <Outlet />
