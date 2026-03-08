@@ -41,7 +41,7 @@ export const defaultSiteData: SiteData = {
     {
       id: '2',
       title: 'Palestra: Prevenção e Diagnóstico Precoce',
-      content: 'Evento gratuito com especialistas renomados em oncologia. Venha aprender sobre a importância da prevenção e do diagnóstico precoce no combate ao câncer. Nossos palestrantes incluem Dr. Maria Silva, oncologista com 20 anos de experiência, e Dr. João Santos, especialista em radiologia diagnóstica. Vagas limitadas, inscreva-se já!',
+      content: 'Evento gratuito com especialistas renomados em oncologia. Venha aprender sobre a importância da prevenção e do diagnóstico precoce no combate ao câncer.',
       image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=400&fit=crop',
       date: '2026-05-20',
       status: 'published',
@@ -49,7 +49,7 @@ export const defaultSiteData: SiteData = {
     {
       id: '3',
       title: 'Bazar Beneficente de Inverno',
-      content: 'Nosso tradicional bazar beneficente está de volta! Roupas, acessórios, artesanato e muito mais com preços acessíveis. Toda a renda será revertida para o tratamento de pacientes em situação de vulnerabilidade social. Aceitamos doações de roupas em bom estado até o dia do evento.',
+      content: 'Nosso tradicional bazar beneficente está de volta! Roupas, acessórios, artesanato e muito mais com preços acessíveis. Toda a renda será revertida para o tratamento de pacientes em situação de vulnerabilidade social.',
       image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=600&h=400&fit=crop',
       date: '2026-06-10',
       status: 'published',
@@ -62,19 +62,12 @@ export const defaultSiteData: SiteData = {
     whatsapp: '5511999999999',
     website: 'https://example.com',
   })),
-  associates: Array.from({ length: 12 }, (_, i) => ({
-    id: String(i + 1),
-    name: `Associado ${i + 1}`,
-    logo: `https://ui-avatars.com/api/?name=A${i + 1}&background=${['7C3AED', 'EC4899', '10B981', '6366F1', 'F59E0B', '8B5CF6'][i % 6]}&color=fff&size=120&bold=true&format=svg`,
-    whatsapp: '5511999999999',
-    website: 'https://example.com',
-  })),
   about: {
-    intro: 'Somos uma cooperativa formada por empresas comprometidas com a luta contra o câncer. Acreditamos que juntos podemos transformar vidas e oferecer esperança a milhares de pessoas que enfrentam essa batalha. Nossa rede de parceiros e associados trabalha incansavelmente para apoiar pacientes, famílias e profissionais de saúde.',
+    intro: 'Somos uma cooperativa formada por empresas comprometidas com a luta contra o câncer. Acreditamos que juntos podemos transformar vidas e oferecer esperança a milhares de pessoas que enfrentam essa batalha.',
     introImage: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600&h=400&fit=crop',
-    mission: 'Promover a união de empresas e profissionais em prol do combate ao câncer, oferecendo apoio integral a pacientes e suas famílias, por meio de ações de conscientização, prevenção e assistência social.',
+    mission: 'Promover a união de empresas e profissionais em prol do combate ao câncer, oferecendo apoio integral a pacientes e suas famílias.',
     missionImage: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&h=400&fit=crop',
-    vision: 'Ser referência nacional como cooperativa de empresas no combate ao câncer, reconhecida pela excelência em suas ações e pelo impacto positivo na vida de milhares de pessoas.',
+    vision: 'Ser referência nacional como cooperativa de empresas no combate ao câncer.',
     visionImage: 'https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=600&h=400&fit=crop',
     values: 'Solidariedade: acreditamos no poder da união.\nEsperança: mantemos o otimismo mesmo nos momentos difíceis.\nTransparência: agimos com ética e responsabilidade.\nInclusão: respeitamos e acolhemos todas as pessoas.\nCompromisso: dedicamo-nos integralmente à nossa causa.',
     valuesImage: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=600&h=400&fit=crop',
@@ -82,7 +75,7 @@ export const defaultSiteData: SiteData = {
   contact: {
     whatsappNumber: '5551999999999',
     email: 'contato@cooperativavida.org.br',
-    phone: '(51) 99999-9999',
+    phone: '51999999999',
     address: 'Av. Paulista, 1000 - São Paulo, SP',
   },
 };

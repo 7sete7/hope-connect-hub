@@ -3,9 +3,9 @@ import { useSite } from '@/contexts/SiteContext';
 import { api } from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { ImageInput } from '@/components/admin/ImageInput';
 
 export default function AdminAbout() {
   const { data, refresh } = useSite();
@@ -18,13 +18,6 @@ export default function AdminAbout() {
     await api.updateAbout(form);
     await refresh();
     toast({ title: 'Conteúdo atualizado!' });
-  };
-
-  const handleImageUpload = async (field: string, e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = await api.uploadImage(file);
-    setForm(f => ({ ...f, [field]: url }));
   };
 
   const sections = [
@@ -52,20 +45,14 @@ export default function AdminAbout() {
                   value={form[section.textKey]}
                   onChange={e => setForm(f => ({ ...f, [section.textKey]: e.target.value }))}
                   rows={4}
+                  className="mt-1"
                 />
               </div>
-              <div>
-                <Label>Imagem</Label>
-                <Input
-                  value={form[section.imageKey]}
-                  onChange={e => setForm(f => ({ ...f, [section.imageKey]: e.target.value }))}
-                  placeholder="https://..."
-                />
-                <input type="file" accept="image/*" onChange={e => handleImageUpload(section.imageKey, e)} className="mt-2 text-sm" />
-                {form[section.imageKey] && (
-                  <img src={form[section.imageKey]} alt="" className="mt-2 h-24 w-full object-cover rounded-lg" />
-                )}
-              </div>
+              <ImageInput
+                label="Imagem"
+                value={form[section.imageKey]}
+                onChange={url => setForm(f => ({ ...f, [section.imageKey]: url }))}
+              />
             </div>
           </div>
         ))}

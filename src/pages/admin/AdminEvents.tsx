@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { ImageInput } from '@/components/admin/ImageInput';
 
 export default function AdminEvents() {
   const { data, refresh } = useSite();
@@ -53,13 +54,6 @@ export default function AdminEvents() {
     toast({ title: 'Evento removido' });
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = await api.uploadImage(file);
-    setForm(f => ({ ...f, image: url }));
-  };
-
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
@@ -75,25 +69,25 @@ export default function AdminEvents() {
             <div className="flex flex-col gap-4 mt-2 max-h-[70vh] overflow-y-auto">
               <div>
                 <Label>Título</Label>
-                <Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
+                <Input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} className="mt-1" />
               </div>
               <div>
                 <Label>Conteúdo</Label>
-                <Textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} rows={6} />
+                <Textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} rows={6} className="mt-1" />
               </div>
-              <div>
-                <Label>Imagem</Label>
-                <Input value={form.image} onChange={e => setForm(f => ({ ...f, image: e.target.value }))} placeholder="https://..." />
-                <input type="file" accept="image/*" onChange={handleImageUpload} className="mt-2 text-sm" />
-              </div>
+              <ImageInput
+                label="Imagem"
+                value={form.image}
+                onChange={url => setForm(f => ({ ...f, image: url }))}
+              />
               <div>
                 <Label>Data</Label>
-                <Input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} />
+                <Input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} className="mt-1" />
               </div>
               <div>
                 <Label>Status</Label>
                 <Select value={form.status} onValueChange={(v: 'published' | 'draft') => setForm(f => ({ ...f, status: v }))}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="published">Publicado</SelectItem>
                     <SelectItem value="draft">Rascunho</SelectItem>

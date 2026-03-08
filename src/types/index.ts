@@ -23,14 +23,6 @@ export interface PartnerItem {
   website?: string;
 }
 
-export interface AssociateItem {
-  id: string;
-  name: string;
-  logo: string;
-  whatsapp?: string;
-  website?: string;
-}
-
 export interface AboutContent {
   intro: string;
   introImage: string;
@@ -59,7 +51,6 @@ export interface SiteData {
   slides: SlideItem[];
   events: EventItem[];
   partners: PartnerItem[];
-  associates: AssociateItem[];
   about: AboutContent;
   contact: ContactSettings;
   colors: SiteColors;

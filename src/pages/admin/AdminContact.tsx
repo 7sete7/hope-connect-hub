@@ -5,16 +5,34 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { PhoneInput, fromWhatsapp, toWhatsapp } from '@/components/admin/PhoneInput';
 
 export default function AdminContact() {
   const { data, refresh } = useSite();
   const { toast } = useToast();
-  const [form, setForm] = useState(data.contact);
+  const [form, setForm] = useState({
+    whatsappNumber: fromWhatsapp(data.contact.whatsappNumber),
+    email: data.contact.email,
+    phone: fromWhatsapp(data.contact.phone),
+    address: data.contact.address,
+  });
 
-  useEffect(() => { setForm(data.contact); }, [data.contact]);
+  useEffect(() => {
+    setForm({
+      whatsappNumber: fromWhatsapp(data.contact.whatsappNumber),
+      email: data.contact.email,
+      phone: data.contact.phone,
+      address: data.contact.address,
+    });
+  }, [data.contact]);
 
   const handleSave = async () => {
-    await api.updateContactSettings(form);
+    await api.updateContactSettings({
+      whatsappNumber: toWhatsapp(form.whatsappNumber),
+      email: form.email,
+      phone: form.phone,
+      address: form.address,
+    });
     await refresh();
     toast({ title: 'Configurações atualizadas!' });
   };
@@ -29,8 +47,11 @@ export default function AdminContact() {
       <div className="bg-card rounded-xl p-6 shadow-sm max-w-lg space-y-5">
         <div>
           <Label>Número do WhatsApp</Label>
-          <Input value={form.whatsappNumber} onChange={e => setForm(f => ({ ...f, whatsappNumber: e.target.value }))} placeholder="5551999999999" className="mt-2" />
-          <p className="text-xs text-muted-foreground mt-1">Formato: código do país + DDD + número</p>
+          <PhoneInput
+            value={form.whatsappNumber}
+            onChange={v => setForm(f => ({ ...f, whatsappNumber: v }))}
+            className="mt-2"
+          />
         </div>
         <div>
           <Label>Email</Label>
@@ -38,7 +59,11 @@ export default function AdminContact() {
         </div>
         <div>
           <Label>Telefone</Label>
-          <Input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="(11) 99999-9999" className="mt-2" />
+          <PhoneInput
+            value={form.phone}
+            onChange={v => setForm(f => ({ ...f, phone: v }))}
+            className="mt-2"
+          />
         </div>
         <div>
           <Label>Endereço</Label>
