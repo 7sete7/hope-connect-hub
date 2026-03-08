@@ -23,8 +23,8 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const isHome = location.pathname === '/';
-  const showTransparent = isHome && !scrolled && !mobileOpen;
+  const hasBanner = ['/', '/quem-somos', '/eventos', '/associados', '/contato'].includes(location.pathname);
+  const showTransparent = hasBanner && !scrolled && !mobileOpen;
 
   return (
     <header
