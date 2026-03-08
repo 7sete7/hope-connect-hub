@@ -122,7 +122,7 @@ export default function Index() {
             {publishedEvents.map((event, i) => (
               <ScrollFadeIn key={event.id} delay={i * 0.15}>
                 <Link to={`/eventos/${event.id}`}>
-                  <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 rounded-2xl">
                     <div className="aspect-[3/2] overflow-hidden">
                       <img
                         src={event.image}
