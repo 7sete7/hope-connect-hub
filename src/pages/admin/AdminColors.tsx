@@ -1,11 +1,198 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useSite } from '@/contexts/SiteContext';
 import { api } from '@/services/api';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { Palette, CalendarDays, ArrowRight, Heart, MessageCircle, ExternalLink } from 'lucide-react';
 
+// ── HSL ↔ Hex conversion helpers ──────────────────────────────────
+function hslStringToHex(hslStr: string): string {
+  try {
+    const parts = hslStr.trim().split(/[\s,/]+/);
+    const h = parseFloat(parts[0]) || 0;
+    const s = (parseFloat(parts[1]) || 0) / 100;
+    const l = (parseFloat(parts[2]) || 0) / 100;
+    const a = s * Math.min(l, 1 - l);
+    const f = (n: number) => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color).toString(16).padStart(2, '0');
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+  } catch {
+    return '#7c3aed';
+  }
+}
+
+function hexToHslString(hex: string): string {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  if (max === min) return `0 0% ${Math.round(l * 100)}%`;
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+  else if (max === g) h = ((b - r) / d + 2) / 6;
+  else h = ((r - g) / d + 4) / 6;
+  return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
+}
+
+// ── Color Picker Field ────────────────────────────────────────────
+function ColorField({ label, description, value, onChange }: {
+  label: string;
+  description: string;
+  value: string;
+  onChange: (hsl: string) => void;
+}) {
+  const hex = useMemo(() => hslStringToHex(value), [value]);
+
+  return (
+    <div className="flex items-center gap-4 p-4 rounded-xl border border-border bg-background">
+      <label className="relative cursor-pointer group">
+        <div
+          className="w-14 h-14 rounded-xl border-2 border-border shadow-sm group-hover:scale-105 transition-transform"
+          style={{ background: `hsl(${value})` }}
+        />
+        <input
+          type="color"
+          value={hex}
+          onChange={e => onChange(hexToHslString(e.target.value))}
+          className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+        />
+      </label>
+      <div className="flex-1 min-w-0">
+        <p className="font-semibold text-foreground text-sm">{label}</p>
+        <p className="text-xs text-muted-foreground mt-0.5">{description}</p>
+        <p className="text-xs font-mono text-muted-foreground/70 mt-1">{hex.toUpperCase()}</p>
+      </div>
+    </div>
+  );
+}
+
+// ── Live Preview Component ────────────────────────────────────────
+function SitePreview({ primary, secondary, accent }: { primary: string; secondary: string; accent: string }) {
+  const p = `hsl(${primary})`;
+  const s = `hsl(${secondary})`;
+  const a = `hsl(${accent})`;
+
+  return (
+    <div className="rounded-2xl border border-border overflow-hidden bg-background shadow-sm">
+      {/* Mini header */}
+      <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: p }}>
+            <Heart className="w-3.5 h-3.5 text-white" />
+          </div>
+          <span className="text-xs font-bold text-foreground">Cooperativa</span>
+        </div>
+        <div className="flex gap-3">
+          {['Início', 'Eventos', 'Parceiros'].map(t => (
+            <span key={t} className="text-[10px] text-muted-foreground">{t}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Mini hero */}
+      <div className="relative h-28 bg-gradient-to-br from-gray-800 to-gray-900 flex items-end p-4">
+        <div>
+          <div className="h-2 w-32 rounded bg-white/90 mb-1.5" />
+          <div className="h-1.5 w-20 rounded bg-white/50" />
+        </div>
+        <div className="absolute bottom-3 right-3 flex gap-1">
+          {[0, 1, 2].map(i => (
+            <div key={i} className="h-1 rounded-full" style={{ width: i === 0 ? 16 : 4, background: i === 0 ? p : 'rgba(255,255,255,0.4)' }} />
+          ))}
+        </div>
+      </div>
+
+      {/* Mini events */}
+      <div className="p-4">
+        <div className="flex items-center justify-center gap-1 mb-3">
+          <span className="text-[10px] font-bold text-foreground">Próximos Eventos</span>
+          <div className="h-0.5 w-6 rounded-full" style={{ background: p }} />
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="rounded-lg border border-border overflow-hidden">
+              <div className="h-10 bg-muted" />
+              <div className="p-2">
+                <div className="h-1.5 w-full rounded bg-foreground/20 mb-1" />
+                <div className="h-1 w-2/3 rounded bg-muted-foreground/20 mb-2" />
+                <div className="flex items-center gap-0.5">
+                  <span className="text-[8px] font-semibold" style={{ color: p }}>Saiba mais</span>
+                  <ArrowRight className="w-2 h-2" style={{ color: p }} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA button */}
+        <div className="flex justify-center mt-3">
+          <div className="flex items-center gap-1 px-3 py-1.5 rounded-full text-white text-[9px] font-semibold" style={{ background: p }}>
+            Ver todos os eventos
+            <ArrowRight className="w-2.5 h-2.5" />
+          </div>
+        </div>
+      </div>
+
+      {/* Mini partners */}
+      <div className="px-4 pb-4">
+        <div className="rounded-xl p-3" style={{ background: `linear-gradient(135deg, ${p}08, ${s}08)` }}>
+          <div className="flex items-center justify-center gap-1 mb-2">
+            <span className="text-[10px] font-bold text-foreground">Nossos Parceiros</span>
+          </div>
+          <div className="flex justify-center gap-2 mb-2">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="flex flex-col items-center gap-1">
+                <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
+                  <span className="text-[8px] font-bold text-muted-foreground">P{i}</span>
+                </div>
+                <div className="flex gap-0.5">
+                  <div className="w-3.5 h-3.5 rounded-full flex items-center justify-center" style={{ background: `${p}1a` }}>
+                    <MessageCircle className="w-2 h-2" style={{ color: p }} />
+                  </div>
+                  <div className="w-3.5 h-3.5 rounded-full bg-muted flex items-center justify-center">
+                    <ExternalLink className="w-2 h-2 text-muted-foreground" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA area */}
+          <div className="flex items-center justify-center gap-2 mt-2">
+            <span className="text-[8px] text-foreground font-medium">Quer fazer parte?</span>
+            <div className="flex items-center gap-0.5 px-2 py-1 rounded-full text-white text-[8px] font-semibold" style={{ background: s }}>
+              Seja Parceiro
+              <ArrowRight className="w-2 h-2" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mini footer */}
+      <div className="px-4 py-2 bg-[hsl(220,20%,8%)] flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <div className="w-4 h-4 rounded flex items-center justify-center" style={{ background: p }}>
+            <Heart className="w-2 h-2 text-white" />
+          </div>
+          <span className="text-[8px] text-gray-400">Cooperativa Vida</span>
+        </div>
+        <div className="flex gap-1">
+          <div className="w-4 h-4 rounded-full bg-white/10" />
+          <div className="w-4 h-4 rounded-full bg-white/10" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Main Component ────────────────────────────────────────────────
 export default function AdminColors() {
   const { data, refresh } = useSite();
   const { toast } = useToast();
@@ -19,39 +206,55 @@ export default function AdminColors() {
     toast({ title: 'Cores atualizadas!' });
   };
 
-  const colorFields = [
-    { key: 'primary' as const, label: 'Primária', desc: 'Cor principal do site (HSL: ex: 263 83% 58%)' },
-    { key: 'secondary' as const, label: 'Secundária', desc: 'Cor secundária (HSL: ex: 330 81% 60%)' },
-    { key: 'accent' as const, label: 'Destaque', desc: 'Cor de destaque/CTAs (HSL: ex: 160 84% 39%)' },
-  ];
+  const handleReset = () => {
+    setForm({ primary: '263 83% 58%', secondary: '330 81% 60%', accent: '160 84% 39%' });
+  };
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-2xl font-bold text-foreground">Personalizar Cores</h1>
-        <Button onClick={handleSave}>Salvar</Button>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center">
+            <Palette className="w-5 h-5 text-foreground" />
+          </div>
+          <div>
+            <h1 className="font-display text-2xl font-bold text-foreground">Personalizar Cores</h1>
+            <p className="text-sm text-muted-foreground">Clique na cor para abrir o seletor</p>
+          </div>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={handleReset}>Restaurar padrão</Button>
+          <Button onClick={handleSave}>Salvar</Button>
+        </div>
       </div>
 
-      <div className="bg-card rounded-xl p-6 shadow-sm max-w-md flex flex-col gap-6">
-        {colorFields.map(field => (
-          <div key={field.key}>
-            <Label>{field.label}</Label>
-            <div className="flex gap-3 items-center mt-2">
-              <div className="w-10 h-10 rounded-lg border border-border shrink-0" style={{ background: `hsl(${form[field.key]})` }} />
-              <Input value={form[field.key]} onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))} />
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">{field.desc}</p>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Color pickers */}
+        <div className="flex flex-col gap-3">
+          <ColorField
+            label="Cor Primária"
+            description="Botões principais, links e destaques do site"
+            value={form.primary}
+            onChange={v => setForm(f => ({ ...f, primary: v }))}
+          />
+          <ColorField
+            label="Cor Secundária"
+            description="Botões secundários e áreas de destaque"
+            value={form.secondary}
+            onChange={v => setForm(f => ({ ...f, secondary: v }))}
+          />
+          <ColorField
+            label="Cor de Destaque"
+            description="Badges, alertas e elementos de ênfase"
+            value={form.accent}
+            onChange={v => setForm(f => ({ ...f, accent: v }))}
+          />
+        </div>
 
-        {/* Preview */}
-        <div className="mt-4 p-4 rounded-xl border border-border">
-          <p className="text-sm font-medium text-foreground mb-3">Preview</p>
-          <div className="flex gap-3">
-            <div className="h-12 flex-1 rounded-lg flex items-center justify-center text-xs font-medium" style={{ background: `hsl(${form.primary})`, color: 'white' }}>Primária</div>
-            <div className="h-12 flex-1 rounded-lg flex items-center justify-center text-xs font-medium" style={{ background: `hsl(${form.secondary})`, color: 'white' }}>Secundária</div>
-            <div className="h-12 flex-1 rounded-lg flex items-center justify-center text-xs font-medium" style={{ background: `hsl(${form.accent})`, color: 'white' }}>Destaque</div>
-          </div>
+        {/* Live preview */}
+        <div>
+          <p className="text-sm font-medium text-muted-foreground mb-3">Preview do site</p>
+          <SitePreview primary={form.primary} secondary={form.secondary} accent={form.accent} />
         </div>
       </div>
     </div>
