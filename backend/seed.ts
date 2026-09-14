@@ -44,19 +44,19 @@ db.query(`UPDATE about SET
   intro = ?, intro_image = ?, mission = ?, mission_image = ?,
   vision = ?, vision_image = ?, "values" = ?, values_image = ?
   WHERE id = 1`).run(
-  "Somos uma cooperativa formada por empresas comprometidas com a luta contra o câncer. Acreditamos que juntos podemos transformar vidas e oferecer esperança a milhares de pessoas que enfrentam essa batalha.",
+  "O Ser Mulheres de Impacto Entre Ellas é uma rede de mulheres empreendedoras criada para promover conexões, compartilhar conhecimento e gerar novas oportunidades. \nCriamos um espaço onde mulheres podem apresentar seus negócios, trocar experiências, ampliar sua rede de contatos e construir parcerias.",
   "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600&h=400&fit=crop",
-  "Promover a união de empresas e profissionais em prol do combate ao câncer, oferecendo apoio integral a pacientes e suas famílias.",
+  "Nosso objetivo é fortalecer o empreendedorismo feminino criando oportunidades para que mulheres se conectem, aprendam umas com as outras e desenvolvam novos caminhos para seus negócios e projetos.\nPor meio de diferentes ações e experiências, buscamos unir empreendedorismo, conhecimento e relacionamento em torno de temas atuais e relevantes para a comunidade.",
   "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&h=400&fit=crop",
-  "Ser referência nacional como cooperativa de empresas no combate ao câncer, reconhecida pela excelência em suas ações.",
+  "Ser uma rede de referência na conexão e no fortalecimento de mulheres, criando oportunidades de crescimento, colaboração e desenvolvimento por meio de experiências, conhecimento e empreendedorismo.",
   "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=600&h=400&fit=crop",
-  "Solidariedade: acreditamos no poder da união.\nEsperança: mantemos o otimismo mesmo nos momentos difíceis.\nTransparência: agimos com ética e responsabilidade.\nInclusão: respeitamos e acolhemos todas as pessoas.\nCompromisso: dedicamo-nos integralmente à nossa causa.",
+  "Conexão: Acreditamos que boas relações podem gerar novas ideias, parcerias e oportunidades.\nColaboração: Valorizamos a troca de experiências, conhecimentos e apoio entre mulheres, profissionais e empresas.\nEmpreendedorismo: Incentivamos mulheres a desenvolverem seus projetos, apresentarem seus negócios e ampliarem suas possibilidades.\nConhecimento: Promovemos espaços de aprendizado, desenvolvimento e compartilhamento de experiências.\nValorização das mulheres: Buscamos criar ambientes onde mulheres possam se expressar, fortalecer suas trajetórias e ocupar novos espaços.",
   "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=600&h=400&fit=crop"
 );
 
 // Contact settings
 db.query("UPDATE contact_settings SET whatsapp_number = ?, email = ?, phone = ?, address = ? WHERE id = 1").run(
-  "5551999999999", "contato@cooperativavida.org.br", "(51) 99999-9999", "Av. Paulista, 1000 - São Paulo, SP"
+  "5551997602948", "comunidadeentreellas@gmail.com", "(51) 99999-9999", "Av. Ely Correa"
 );
 
 // Colors
@@ -65,11 +65,10 @@ db.query('UPDATE site_colors SET "primary" = ?, secondary = ?, accent = ? WHERE 
 );
 
 // General settings
-db.query("UPDATE general_settings SET site_title = ?, tagline = ?, intro_title = ?, intro_text = ? WHERE id = 1").run(
+db.query("UPDATE general_settings SET site_title = ?, tagline = ?, intro_text = ? WHERE id = 1").run(
   "Ser Mulher de Impacto entre Ellas",
-  "Unindo empresas na luta contra o câncer. Juntos somos mais fortes.",
-  "Nossa causa",
-  "Somos uma rede de empresas que acredita que a união transforma vidas. Cada parceria, cada evento e cada gesto aproxima quem enfrenta o câncer do cuidado, do acolhimento e da esperança que merece."
+  "Juntas podemos fazer impacto",
+  "Uma rede que aproxima mulheres empreendedoras, profissionais, empresas e ideias por meio de encontros, experiências e novas conexões.\\nConheça o Ser Mulheres de Impacto Entre Ellas"
 );
 
 console.log("✅ Seed concluído!");
