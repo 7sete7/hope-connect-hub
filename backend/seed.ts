@@ -10,9 +10,9 @@ db.query("INSERT OR IGNORE INTO users (id, email, password_hash) VALUES (?, ?, ?
 
 // Slides
 const slides = [
-  { id: "1", image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=1600&h=600&fit=crop", title: "Juntos Contra o Câncer", subtitle: "Unindo empresas para transformar vidas e construir esperança", order: 1 },
-  { id: "2", image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=1600&h=600&fit=crop", title: "Solidariedade em Ação", subtitle: "Cada parceria faz a diferença na luta contra o câncer", order: 2 },
-  { id: "3", image: "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1600&h=600&fit=crop", title: "Esperança que Transforma", subtitle: "Apoiando pacientes e famílias em sua jornada", order: 3 },
+  { id: "1", image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=1600&h=600&fit=crop", title: "Conexões que criam oportunidades", subtitle: "Aproximamos mulheres, profissionais e negócios para fortalecer relações, ampliar contatos e abrir novos caminhos", order: 1 },
+  { id: "2", image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=1600&h=600&fit=crop", title: "Conhecimento que transforma", subtitle: "Workshops, encontros e experiências que incentivam a troca de ideias, aprendizados e vivências entre mulheres", order: 2 },
+  { id: "3", image: "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1600&h=600&fit=crop", title: "Espaço para mostrar o seu negócio", subtitle: "Feiras, exposições e eventos que valorizam empreendedoras, marcas, produtos e serviços", order: 3 },
 ];
 const insertSlide = db.prepare('INSERT OR IGNORE INTO slides (id, image, title, subtitle, "order") VALUES (?, ?, ?, ?, ?)');
 for (const s of slides) insertSlide.run(s.id, s.image, s.title, s.subtitle, s.order);
@@ -23,8 +23,8 @@ const events = [
   { id: "2", title: "Palestra: Prevenção e Diagnóstico Precoce", content: "Evento gratuito com especialistas renomados em oncologia. Venha aprender sobre a importância da prevenção e do diagnóstico precoce.", image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=400&fit=crop", date: "2026-05-20", status: "published" },
   { id: "3", title: "Bazar Beneficente de Inverno", content: "Nosso tradicional bazar beneficente está de volta! Roupas, acessórios, artesanato e muito mais com preços acessíveis.", image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=600&h=400&fit=crop", date: "2026-06-10", status: "published" },
 ];
-const insertEvent = db.prepare("INSERT OR IGNORE INTO events (id, title, content, image, date, status) VALUES (?, ?, ?, ?, ?, ?)");
-for (const e of events) insertEvent.run(e.id, e.title, e.content, e.image, e.date, e.status);
+//const insertEvent = db.prepare("INSERT OR IGNORE INTO events (id, title, content, image, date, status) VALUES (?, ?, ?, ?, ?, ?)");
+//for (const e of events) insertEvent.run(e.id, e.title, e.content, e.image, e.date, e.status);
 
 // Partners
 const colors = ["7C3AED", "EC4899", "10B981", "6366F1", "F59E0B", "8B5CF6"];
