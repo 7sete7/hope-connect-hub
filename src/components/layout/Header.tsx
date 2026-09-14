@@ -46,7 +46,7 @@ export function Header() {
                 showTransparent ? 'text-white' : 'text-foreground'
               }`}
             >
-              Cooperativa Vida Contra o Câncer
+              Ser Mulher de Impacto entre Ellas
             </span>
           </Link>
 
