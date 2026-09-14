@@ -4,6 +4,7 @@ import { handlePartners } from "./routes/partners";
 import { handleAbout } from "./routes/about";
 import { handleContact } from "./routes/contact";
 import { handleColors } from "./routes/colors";
+import { handleGeneral } from "./routes/general";
 import { handleAuth } from "./routes/auth";
 import { handleUpload } from "./routes/upload";
 import { resolve } from "path";
@@ -37,6 +38,7 @@ function route(pathname: string): ((req: Request) => Promise<Response>) | null {
   if (pathname.startsWith("/api/about")) return handleAbout;
   if (pathname.startsWith("/api/contact")) return handleContact;
   if (pathname.startsWith("/api/colors")) return handleColors;
+  if (pathname.startsWith("/api/general")) return handleGeneral;
   if (pathname === "/api/auth/login") return handleAuth;
   if (pathname === "/api/upload") return handleUpload;
   return null;
