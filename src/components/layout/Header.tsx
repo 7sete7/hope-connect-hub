@@ -4,6 +4,7 @@ import { Menu, X, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useLocation } from 'react-router-dom';
+import { useSite } from '@/contexts/SiteContext';
 
 const navLinks = [
   { to: '/', label: 'Início' },
@@ -17,6 +18,7 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const { data } = useSite();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -46,7 +48,7 @@ export function Header() {
                 showTransparent ? 'text-white' : 'text-foreground'
               }`}
             >
-              Ser Mulher de Impacto entre Ellas
+              {data.general.siteTitle}
             </span>
           </Link>
 

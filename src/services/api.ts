@@ -1,4 +1,4 @@
-import { SiteData, SlideItem, EventItem, PartnerItem, AboutContent, ContactSettings, SiteColors } from '@/types';
+import { SiteData, SlideItem, EventItem, PartnerItem, AboutContent, ContactSettings, SiteColors, GeneralSettings } from '@/types';
 import { defaultSiteData } from '@/data/mockData';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
@@ -18,7 +18,7 @@ function getData(): SiteData {
         delete parsed.associates;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
       }
-      return parsed;
+      return { ...defaultSiteData, ...parsed, general: { ...defaultSiteData.general, ...(parsed.general || {}) } };
     }
   } catch {}
   return { ...defaultSiteData };
@@ -65,16 +65,20 @@ async function httpForm<T>(path: string, formData: FormData): Promise<T> {
 // ─── API implementation ─────────────────────────────────────────────────
 export const api = USE_API ? {
   getSiteData: async (): Promise<SiteData> => {
-    const [slides, events, partners, about, contact, colors] = await Promise.all([
+    const [slides, events, partners, about, contact, colors, general] = await Promise.all([
       http<SlideItem[]>('/api/slides'),
       http<EventItem[]>('/api/events'),
       http<PartnerItem[]>('/api/partners'),
       http<AboutContent>('/api/about'),
       http<ContactSettings>('/api/contact'),
       http<SiteColors>('/api/colors'),
+      http<GeneralSettings>('/api/general'),
     ]);
-    return { slides, events, partners, about, contact, colors };
+    return { slides, events, partners, about, contact, colors, general };
   },
+
+  getGeneral: () => http<GeneralSettings>('/api/general'),
+  updateGeneral: (updates: Partial<GeneralSettings>) => http<GeneralSettings>('/api/general', { method: 'PUT', body: JSON.stringify(updates) }),
 
   getSlides: () => http<SlideItem[]>('/api/slides'),
   createSlide: (slide: Omit<SlideItem, 'id'>) => http<SlideItem>('/api/slides', { method: 'POST', body: JSON.stringify(slide) }),
@@ -207,6 +211,14 @@ export const api = USE_API ? {
     data.contact = { ...data.contact, ...updates };
     saveData(data);
     return data.contact;
+  },
+
+  getGeneral: async (): Promise<GeneralSettings> => getData().general,
+  updateGeneral: async (updates: Partial<GeneralSettings>): Promise<GeneralSettings> => {
+    const data = getData();
+    data.general = { ...data.general, ...updates };
+    saveData(data);
+    return data.general;
   },
 
   getColors: async (): Promise<SiteColors> => getData().colors,

@@ -22,6 +22,7 @@ import AdminPartners from "./pages/admin/AdminPartners";
 import AdminAbout from "./pages/admin/AdminAbout";
 import AdminContact from "./pages/admin/AdminContact";
 import AdminColors from "./pages/admin/AdminColors";
+import AdminGeneral from "./pages/admin/AdminGeneral";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -57,6 +58,7 @@ const App = () => (
                 <Route path="quem-somos" element={<AdminAbout />} />
                 <Route path="contato" element={<AdminContact />} />
                 <Route path="cores" element={<AdminColors />} />
+                <Route path="geral" element={<AdminGeneral />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />

@@ -99,6 +99,27 @@ export default function Index() {
         )}
       </section>
 
+      {/* Intro Text Section */}
+      {(data.general.introTitle || data.general.introText) && (
+        <section className="py-20 sm:py-28 bg-background">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <ScrollFadeIn>
+              {data.general.introTitle && (
+                <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                  {data.general.introTitle}
+                </h2>
+              )}
+              {data.general.introText && (
+                <p className="text-xl sm:text-2xl lg:text-3xl leading-relaxed text-muted-foreground whitespace-pre-line">
+                  {data.general.introText}
+                </p>
+              )}
+              <div className="w-16 h-1 rounded-full bg-primary mt-8 mx-auto" />
+            </ScrollFadeIn>
+          </div>
+        </section>
+      )}
+
       {/* Events Section */}
       <section className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -47,7 +47,15 @@ export interface SiteColors {
   accent: string;
 }
 
+export interface GeneralSettings {
+  siteTitle: string;
+  tagline: string;
+  introTitle: string;
+  introText: string;
+}
+
 export interface SiteData {
+  general: GeneralSettings;
   slides: SlideItem[];
   events: EventItem[];
   partners: PartnerItem[];

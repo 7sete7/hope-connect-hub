@@ -64,4 +64,12 @@ db.query('UPDATE site_colors SET "primary" = ?, secondary = ?, accent = ? WHERE 
   "263 83% 58%", "330 81% 60%", "160 84% 39%"
 );
 
+// General settings
+db.query("UPDATE general_settings SET site_title = ?, tagline = ?, intro_title = ?, intro_text = ? WHERE id = 1").run(
+  "Ser Mulher de Impacto entre Ellas",
+  "Unindo empresas na luta contra o câncer. Juntos somos mais fortes.",
+  "Nossa causa",
+  "Somos uma rede de empresas que acredita que a união transforma vidas. Cada parceria, cada evento e cada gesto aproxima quem enfrenta o câncer do cuidado, do acolhimento e da esperança que merece."
+);
+
 console.log("✅ Seed concluído!");

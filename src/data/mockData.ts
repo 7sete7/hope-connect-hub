@@ -1,6 +1,12 @@
 import { SiteData } from '@/types';
 
 export const defaultSiteData: SiteData = {
+  general: {
+    siteTitle: 'Ser Mulher de Impacto entre Ellas',
+    tagline: 'Unindo empresas na luta contra o câncer. Juntos somos mais fortes.',
+    introTitle: 'Nossa causa',
+    introText: 'Somos uma rede de empresas que acredita que a união transforma vidas. Cada parceria, cada evento e cada gesto aproxima quem enfrenta o câncer do cuidado, do acolhimento e da esperança que merece.',
+  },
   colors: {
     primary: '263 83% 58%',
     secondary: '330 81% 60%',
