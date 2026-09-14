@@ -1,10 +1,11 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { LayoutDashboard, Image, CalendarDays, Handshake, Info, Phone, Palette, LogOut, Heart } from 'lucide-react';
+import { LayoutDashboard, Image, CalendarDays, Handshake, Info, Phone, Palette, LogOut, Heart, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const adminLinks = [
   { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { to: '/admin/geral', label: 'Geral', icon: Settings },
   { to: '/admin/carrossel', label: 'Carrossel', icon: Image },
   { to: '/admin/eventos', label: 'Eventos', icon: CalendarDays },
   { to: '/admin/parceiros', label: 'Parceiros', icon: Handshake },
