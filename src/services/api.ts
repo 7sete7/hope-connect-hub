@@ -18,7 +18,7 @@ function getData(): SiteData {
         delete parsed.associates;
         localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
       }
-      return parsed;
+      return { ...defaultSiteData, ...parsed, general: { ...defaultSiteData.general, ...(parsed.general || {}) } };
     }
   } catch {}
   return { ...defaultSiteData };
@@ -211,6 +211,14 @@ export const api = USE_API ? {
     data.contact = { ...data.contact, ...updates };
     saveData(data);
     return data.contact;
+  },
+
+  getGeneral: async (): Promise<GeneralSettings> => getData().general,
+  updateGeneral: async (updates: Partial<GeneralSettings>): Promise<GeneralSettings> => {
+    const data = getData();
+    data.general = { ...data.general, ...updates };
+    saveData(data);
+    return data.general;
   },
 
   getColors: async (): Promise<SiteColors> => getData().colors,
