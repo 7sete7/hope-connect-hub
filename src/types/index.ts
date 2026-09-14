@@ -50,7 +50,7 @@ export interface SiteColors {
 export interface GeneralSettings {
   siteTitle: string;
   tagline: string;
-  introTitle: string;
+  introTitle?: string;
   introText: string;
 }
 
