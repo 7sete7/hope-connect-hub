@@ -12,14 +12,18 @@ const SiteContext = createContext<SiteContextType | null>(null);
 
 export function SiteProvider({ children }: { children: React.ReactNode }) {
   const [data, setData] = useState<SiteData>(defaultSiteData);
+  const [loaded, setLoaded] = useState(false);
 
   const refresh = useCallback(async () => {
     const siteData = await api.getSiteData();
     setData(siteData);
   }, []);
 
+  // Primeira carga: segura a renderização para não exibir os dados padrão antes dos do banco
   useEffect(() => {
-    refresh();
+    refresh()
+      .catch(err => console.error('Falha ao carregar dados do site:', err))
+      .finally(() => setLoaded(true));
   }, [refresh]);
 
   // Apply custom colors as CSS variables
@@ -32,7 +36,11 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <SiteContext.Provider value={{ data, refresh }}>
-      {children}
+      {loaded ? children : (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+        </div>
+      )}
     </SiteContext.Provider>
   );
 }

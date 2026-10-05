@@ -1,8 +1,10 @@
-import { SiteData, SlideItem, EventItem, PartnerItem, AboutContent, ContactSettings, SiteColors, GeneralSettings } from '@/types';
+import { SiteData, SlideItem, EventItem, PartnerItem, AboutContent, ContactSettings, SiteColors, GeneralSettings, ContactMessage } from '@/types';
 import { defaultSiteData } from '@/data/mockData';
 
+// Base da API: vazio = mesmo domínio (nginx em produção, proxy do Vite em dev)
 const API_URL = import.meta.env.VITE_API_URL || '';
-const USE_API = !!API_URL;
+// localStorage só quando explicitamente pedido (ex.: preview do Lovable, sem backend)
+const USE_API = import.meta.env.VITE_USE_LOCAL_STORAGE !== 'true';
 
 // ─── localStorage fallback (Lovable preview) ───────────────────────────
 const STORAGE_KEY = 'cooperativa_site_data';
@@ -37,12 +39,20 @@ function getToken(): string | null {
   return localStorage.getItem('auth_token');
 }
 
+// Token expirado/inválido: limpa a sessão e manda para o login
+function handleUnauthorized(res: Response, token: string | null) {
+  if (res.status !== 401 || !token) return;
+  localStorage.removeItem('auth_token');
+  if (!window.location.pathname.startsWith('/login')) window.location.assign('/login');
+}
+
 async function http<T>(path: string, options: RequestInit = {}): Promise<T> {
   const headers: Record<string, string> = { 'Content-Type': 'application/json', ...(options.headers as Record<string, string> || {}) };
   const token = getToken();
   if (token) headers['Authorization'] = `Bearer ${token}`;
   const res = await fetch(`${API_URL}${path}`, { ...options, headers });
   if (!res.ok) {
+    handleUnauthorized(res, token);
     const err = await res.json().catch(() => ({ error: 'Erro desconhecido' }));
     throw new Error(err.error || `HTTP ${res.status}`);
   }
@@ -56,6 +66,7 @@ async function httpForm<T>(path: string, formData: FormData): Promise<T> {
   if (token) headers['Authorization'] = `Bearer ${token}`;
   const res = await fetch(`${API_URL}${path}`, { method: 'POST', headers, body: formData });
   if (!res.ok) {
+    handleUnauthorized(res, token);
     const err = await res.json().catch(() => ({ error: 'Erro desconhecido' }));
     throw new Error(err.error || `HTTP ${res.status}`);
   }
@@ -116,8 +127,10 @@ export const api = USE_API ? {
   },
   isAuthenticated: (): boolean => !!localStorage.getItem('auth_token'),
 
-  sendContactMessage: (data: { name: string; email: string; phone: string; message: string }) =>
+  sendContactMessage: (data: { name: string; email: string; phone: string; subject?: string; message: string }) =>
     http<void>('/api/contact/message', { method: 'POST', body: JSON.stringify(data) }),
+  getContactMessages: () => http<ContactMessage[]>('/api/contact/messages'),
+  deleteContactMessage: (id: string) => http<void>(`/api/contact/messages/${id}`, { method: 'DELETE' }),
 
   uploadImage: async (file: File): Promise<string> => {
     const formData = new FormData();
@@ -242,10 +255,12 @@ export const api = USE_API ? {
   },
   isAuthenticated: (): boolean => !!localStorage.getItem('auth_token'),
 
-  sendContactMessage: async (data: { name: string; email: string; phone: string; message: string }): Promise<void> => {
+  sendContactMessage: async (data: { name: string; email: string; phone: string; subject?: string; message: string }): Promise<void> => {
     console.log('Contact message sent:', data);
     await new Promise(resolve => setTimeout(resolve, 1000));
   },
+  getContactMessages: async (): Promise<ContactMessage[]> => [],
+  deleteContactMessage: async (_id: string): Promise<void> => {},
 
   uploadImage: async (file: File): Promise<string> => {
     return new Promise((resolve) => {

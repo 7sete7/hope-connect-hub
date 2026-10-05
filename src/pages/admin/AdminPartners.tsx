@@ -17,11 +17,11 @@ export default function AdminPartners() {
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<PartnerItem | null>(null);
-  const [form, setForm] = useState({ name: '', logo: '', whatsapp: '', website: '' });
+  const [form, setForm] = useState({ name: '', logo: '', whatsapp: '', instagram: '', website: '' });
 
   const openCreate = () => {
     setEditing(null);
-    setForm({ name: '', logo: '', whatsapp: '', website: '' });
+    setForm({ name: '', logo: '', whatsapp: '', instagram: '', website: '' });
     setDialogOpen(true);
   };
 
@@ -31,14 +31,19 @@ export default function AdminPartners() {
       name: item.name,
       logo: item.logo,
       whatsapp: fromWhatsapp(item.whatsapp || ''),
+      instagram: item.instagram || '',
       website: item.website || '',
     });
     setDialogOpen(true);
   };
 
   const handleSave = async () => {
+    if (!form.name.trim() || !form.logo) {
+      toast({ title: 'Preencha o nome e a logo', variant: 'destructive' });
+      return;
+    }
     try {
-      const payload = { ...form, whatsapp: toWhatsapp(form.whatsapp) };
+      const payload = { ...form, whatsapp: toWhatsapp(form.whatsapp), instagram: form.instagram.trim(), website: form.website.trim() };
       if (editing) {
         await api.updatePartner(editing.id, payload);
       } else {
@@ -52,10 +57,15 @@ export default function AdminPartners() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    await api.deletePartner(id);
-    await refresh();
-    toast({ title: 'Parceiro removido' });
+  const handleDelete = async (item: PartnerItem) => {
+    if (!confirm(`Remover o parceiro "${item.name}"?`)) return;
+    try {
+      await api.deletePartner(item.id);
+      await refresh();
+      toast({ title: 'Parceiro removido' });
+    } catch {
+      toast({ title: 'Erro ao remover', variant: 'destructive' });
+    }
   };
 
   return (
@@ -84,6 +94,10 @@ export default function AdminPartners() {
                   className="mt-1"
                 />
               </div>
+              <div>
+                <Label>Instagram</Label>
+                <Input value={form.instagram} onChange={e => setForm(f => ({ ...f, instagram: e.target.value }))} placeholder="@perfil ou https://instagram.com/perfil" className="mt-1" />
+              </div>
               <div><Label>Website</Label><Input value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} placeholder="https://..." className="mt-1" /></div>
               <Button onClick={handleSave}>Salvar</Button>
             </div>
@@ -101,7 +115,7 @@ export default function AdminPartners() {
               </div>
               <div className="flex gap-1 shrink-0">
                 <Button variant="ghost" size="icon" onClick={() => openEdit(item)}><Pencil className="w-4 h-4" /></Button>
-                <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                <Button variant="ghost" size="icon" onClick={() => handleDelete(item)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
               </div>
             </CardContent>
           </Card>

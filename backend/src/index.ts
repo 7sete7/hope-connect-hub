@@ -55,9 +55,9 @@ Bun.serve({
     }
 
     if (url.pathname.startsWith("/uploads/")) {
-      const filePath = resolve(UPLOAD_DIR, url.pathname.slice("/uploads/".length));
+      const filePath = resolve(UPLOAD_DIR, decodeURIComponent(url.pathname.slice("/uploads/".length)));
       const file = Bun.file(filePath);
-      if (await file.exists()) {
+      if (filePath.startsWith(resolve(UPLOAD_DIR) + "/") && (await file.exists())) {
         return withCors(new Response(file), origin);
       }
       return withCors(Response.json({ error: "Arquivo não encontrado" }, { status: 404 }), origin);

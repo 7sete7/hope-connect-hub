@@ -71,7 +71,7 @@ export default function Contact() {
     }
     setLoading(true);
     try {
-      await api.sendContactMessage({ name: form.name, email: form.email, phone: form.phone, message: form.message });
+      await api.sendContactMessage({ name: form.name, email: form.email, phone: form.phone, subject: form.subject, message: form.message });
       toast({ title: 'Mensagem enviada!', description: 'Entraremos em contato em breve.' });
       setForm({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch {

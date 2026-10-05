@@ -1,10 +1,21 @@
 import db from "./src/db";
 
+// O seed só roda em banco vazio: rodar de novo sobrescreveria o que foi editado no admin
+const { count } = db.query("SELECT COUNT(*) AS count FROM users").get() as { count: number };
+if (count > 0) {
+  console.log("ℹ️  Banco já populado, seed ignorado.");
+  process.exit(0);
+}
+
 console.log("🌱 Inserindo dados iniciais...");
 
-// Create admin user (password: admin123)
-const adminPasswordHash = await Bun.password.hash("admin123", { algorithm: "bcrypt" });
-db.query("INSERT OR IGNORE INTO users (id, email, password_hash) VALUES (?, ?, ?)").run("admin-1", "admin@cooperativa.com", adminPasswordHash);
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@cooperativa.com";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+if (!process.env.ADMIN_PASSWORD) {
+  console.warn("⚠️  ADMIN_PASSWORD não definido — usando a senha padrão 'admin123'. Defina-o em produção.");
+}
+const adminPasswordHash = await Bun.password.hash(ADMIN_PASSWORD, { algorithm: "bcrypt" });
+db.query("INSERT OR IGNORE INTO users (id, email, password_hash) VALUES (?, ?, ?)").run("admin-1", ADMIN_EMAIL, adminPasswordHash);
 
 // Slides
 const slides = [
@@ -66,23 +77,21 @@ const events = [
 
 // Partners
 const partners = [
-  { id: "1", name: "Radio Viva RS", logo: "/Radio Viva RS.jpeg", website: "https://www.radiovivars.com.br" },
-  { id: "2", name: "Ateliê Artes da Aldeia", logo: "/Atelie Artes da Aldeia.jpeg" },
-  { id: "3", name: "Banho de Lua", logo: "/Banho de Lua.jpeg" },
-  { id: "4", name: "Clara Gomes Terapeuta", logo: "/Clara Gomes Terapeuta.jpeg" },
+  { id: "1", name: "Radio Viva RS", logo: "/RadioVivaRS.jpeg", website: "https://www.radiovivars.com.br" },
+  { id: "2", name: "Ateliê Artes da Aldeia", logo: "/AtelieArtesdaAldeia.jpeg" },
+  { id: "3", name: "Banho de Lua", logo: "/BanhodeLua.jpeg" },
+  { id: "4", name: "Clara Gomes Terapeuta", logo: "/ClaraGomesTerapeuta.jpeg" },
   { id: "5", name: "Essendris", logo: "/Essendris.jpeg" },
-  { id: "6", name: "Grazi Ferreira Fotografia", logo: "/Grazi Ferreira Fotografia.jpeg" },
-  { id: "7", name: "Josy Barbosa Estrategista de Imagem", logo: "/Josy Barbosa Estrategista de Imagem.jpeg" },
-  { id: "8", name: "K&R Store", logo: "/K&R Store.jpeg" },
-  { id: "9", name: "Marias Quitutes", logo: "/Marias Quitutes.jpeg" },
-  { id: "10", name: "MR Estética", logo: "/MR Estética.jpeg" },
-  { id: "11", name: "Amor de Vó", logo: "/Amor de Vó.jpeg" },
+  { id: "6", name: "Grazi Ferreira Fotografia", logo: "/GraziFerreiraFotografia.jpeg" },
+  { id: "7", name: "Josy Barbosa Estrategista de Imagem", logo: "/JosyBarbosa.jpeg" },
+  { id: "8", name: "K&R Store", logo: "/KRStore.jpeg" },
+  { id: "9", name: "Marias Quitutes", logo: "/MariasQuitutes.jpeg" },
+  { id: "10", name: "MR Estética", logo: "/MREstética.jpeg" },
+  { id: "11", name: "Amor de Vó", logo: "/AmordeVo.jpeg" },
   { id: "12", name: "Aventurina Semijoias", logo: "/Semijoias.jpeg" },
 ];
 const insertPartner = db.prepare("INSERT OR IGNORE INTO partners (id, name, logo, website) VALUES (?, ?, ?, ?)");
-for (let i = 0; i < partners.length; i++) {
-  insertPartner.run(partners[i].id, partners[i].name, partners[i].logo, partners[i].website);
-}
+for (const p of partners) insertPartner.run(p.id, p.name, p.logo, p.website ?? null);
 
 // About
 db.query(
@@ -105,8 +114,8 @@ db.query(
 db.query("UPDATE contact_settings SET whatsapp_number = ?, email = ?, phone = ?, address = ? WHERE id = 1").run(
   "5551997602948",
   "comunidadeentreellas@gmail.com",
-  "(51) 99999-9999",
-  "Av. Ely Correa",
+  "5551997602948",
+  "Av. Ely Corrêa - Gravataí, RS",
 );
 
 // Colors

@@ -20,6 +20,7 @@ export interface PartnerItem {
   name: string;
   logo: string;
   whatsapp?: string;
+  instagram?: string;
   website?: string;
 }
 
@@ -62,4 +63,14 @@ export interface SiteData {
   about: AboutContent;
   contact: ContactSettings;
   colors: SiteColors;
+}
+
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string | null;
+  subject?: string | null;
+  message: string;
+  createdAt: string;
 }

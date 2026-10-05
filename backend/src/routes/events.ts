@@ -1,5 +1,5 @@
 import db from "../db";
-import { requireAuth } from "../middleware/auth";
+import { requireAuth, verifyAuth } from "../middleware/auth";
 
 function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2);
@@ -11,12 +11,14 @@ export async function handleEvents(req: Request): Promise<Response> {
   const id = parts[2] || null;
 
   if (req.method === "GET") {
+    // Rascunhos só são visíveis para o admin autenticado
+    const onlyPublished = url.searchParams.get("status") === "published" || !(await verifyAuth(req));
     if (id) {
-      const event = db.query("SELECT * FROM events WHERE id = ?").get(id);
-      return event ? Response.json(event) : Response.json({ error: "Não encontrado" }, { status: 404 });
+      const event = db.query("SELECT * FROM events WHERE id = ?").get(id) as any;
+      if (!event || (onlyPublished && event.status !== "published")) return Response.json({ error: "Não encontrado" }, { status: 404 });
+      return Response.json(event);
     }
-    const published = url.searchParams.get("status");
-    if (published === "published") {
+    if (onlyPublished) {
       return Response.json(db.query("SELECT * FROM events WHERE status = 'published' ORDER BY date DESC").all());
     }
     return Response.json(db.query("SELECT * FROM events ORDER BY date DESC").all());
@@ -27,6 +29,9 @@ export async function handleEvents(req: Request): Promise<Response> {
 
   if (req.method === "POST") {
     const body = await req.json();
+    if (!body.title || !body.content || !body.image || !body.date) {
+      return Response.json({ error: "Título, conteúdo, imagem e data são obrigatórios" }, { status: 400 });
+    }
     const newId = generateId();
     db.query("INSERT INTO events (id, title, content, image, date, status) VALUES (?, ?, ?, ?, ?, ?)").run(
       newId, body.title, body.content, body.image, body.date, body.status || "draft"

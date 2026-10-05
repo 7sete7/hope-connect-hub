@@ -1,7 +1,6 @@
 import { SignJWT } from "jose";
 import db from "../db";
-
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "cooperativa-secret-change-in-production");
+import { JWT_SECRET } from "../middleware/auth";
 const TOKEN_EXPIRY = "24h";
 
 export async function handleAuth(req: Request): Promise<Response> {
@@ -9,7 +8,7 @@ export async function handleAuth(req: Request): Promise<Response> {
     return Response.json({ error: "Método não permitido" }, { status: 405 });
   }
 
-  const body = await req.json();
+  const body = await req.json().catch(() => ({}));
   const { email, password } = body;
 
   if (!email || !password) {

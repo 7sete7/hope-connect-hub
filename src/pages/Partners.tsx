@@ -1,8 +1,9 @@
-import { MessageCircle, ExternalLink, ArrowRight } from 'lucide-react';
+import { MessageCircle, Instagram, ExternalLink, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ScrollFadeIn } from '@/components/ScrollFadeIn';
 import { PageBanner } from '@/components/PageBanner';
 import { useSite } from '@/contexts/SiteContext';
+import { instagramUrl } from '@/lib/utils';
 
 export default function Partners() {
   const { data } = useSite();
@@ -35,7 +36,7 @@ export default function Partners() {
                   </div>
                   <h3 className="font-bold text-foreground mb-1">{partner.name}</h3>
                   <p className="text-muted-foreground text-sm mb-6">Parceiro da cooperativa</p>
-                  <div className="flex items-center gap-2 mt-auto">
+                  <div className="flex flex-wrap items-center justify-center gap-2 mt-auto">
                     {partner.whatsapp && (
                       <a
                         href={`https://wa.me/${partner.whatsapp}`}
@@ -45,6 +46,17 @@ export default function Partners() {
                       >
                         <MessageCircle className="w-4 h-4" />
                         WhatsApp
+                      </a>
+                    )}
+                    {partner.instagram && (
+                      <a
+                        href={instagramUrl(partner.instagram)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-secondary text-secondary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
+                      >
+                        <Instagram className="w-4 h-4" />
+                        Instagram
                       </a>
                     )}
                     {partner.website && (

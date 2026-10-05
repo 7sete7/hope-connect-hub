@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircle, ExternalLink, ArrowRight } from 'lucide-react';
+import { MessageCircle, Instagram, ExternalLink, ArrowRight } from 'lucide-react';
 import { ScrollFadeIn } from '@/components/ScrollFadeIn';
 import { useSite } from '@/contexts/SiteContext';
+import { instagramUrl } from '@/lib/utils';
 
 export function PartnersCarousel() {
   const { data } = useSite();
@@ -84,10 +85,23 @@ export function PartnersCarousel() {
                       href={`https://wa.me/${partner.whatsapp}`}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`WhatsApp de ${partner.name}`}
                       className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center hover:bg-primary/20 transition-colors"
                       onClick={e => e.stopPropagation()}
                     >
                       <MessageCircle className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                  {partner.instagram && (
+                    <a
+                      href={instagramUrl(partner.instagram)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Instagram de ${partner.name}`}
+                      className="w-8 h-8 rounded-full bg-secondary/10 text-secondary flex items-center justify-center hover:bg-secondary/20 transition-colors"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <Instagram className="w-3.5 h-3.5" />
                     </a>
                   )}
                   {partner.website && (

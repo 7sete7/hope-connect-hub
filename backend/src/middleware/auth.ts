@@ -1,6 +1,10 @@
 import { jwtVerify } from "jose";
 
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "cooperativa-secret-change-in-production");
+if (!process.env.JWT_SECRET && process.env.NODE_ENV === "production") {
+  throw new Error("JWT_SECRET é obrigatório em produção");
+}
+
+export const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "cooperativa-secret-change-in-production");
 
 export async function verifyAuth(req: Request): Promise<{ userId: string } | null> {
   const header = req.headers.get("Authorization");

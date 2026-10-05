@@ -23,6 +23,7 @@ import AdminAbout from "./pages/admin/AdminAbout";
 import AdminContact from "./pages/admin/AdminContact";
 import AdminColors from "./pages/admin/AdminColors";
 import AdminGeneral from "./pages/admin/AdminGeneral";
+import AdminMessages from "./pages/admin/AdminMessages";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -59,6 +60,7 @@ const App = () => (
                 <Route path="contato" element={<AdminContact />} />
                 <Route path="cores" element={<AdminColors />} />
                 <Route path="geral" element={<AdminGeneral />} />
+                <Route path="mensagens" element={<AdminMessages />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />

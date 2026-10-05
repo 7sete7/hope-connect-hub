@@ -11,16 +11,18 @@ export async function handleUpload(req: Request): Promise<Response> {
   const auth = await requireAuth(req);
   if (auth instanceof Response) return auth;
 
-  const formData = await req.formData();
+  const formData = await req.formData().catch(() => null);
+  if (!formData) return Response.json({ error: "Envio inválido" }, { status: 400 });
   const file = formData.get("file") as File | null;
 
   if (!file) {
     return Response.json({ error: "Nenhum arquivo enviado" }, { status: 400 });
   }
 
-  // Validate file type
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml"];
-  if (!allowedTypes.includes(file.type)) {
+  // Validate file type (SVG fica de fora: pode carregar scripts servidos no mesmo domínio)
+  const allowedTypes: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/gif": "gif" };
+  const ext = allowedTypes[file.type];
+  if (!ext) {
     return Response.json({ error: "Tipo de arquivo não permitido" }, { status: 400 });
   }
 
@@ -29,7 +31,6 @@ export async function handleUpload(req: Request): Promise<Response> {
     return Response.json({ error: "Arquivo muito grande (máx 5MB)" }, { status: 400 });
   }
 
-  const ext = file.name.split(".").pop() || "jpg";
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
   const filepath = resolve(UPLOAD_DIR, filename);
 

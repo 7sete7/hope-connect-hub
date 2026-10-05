@@ -25,6 +25,7 @@ export async function handleSlides(req: Request): Promise<Response> {
 
   if (req.method === "POST") {
     const body = await req.json();
+    if (!body.image) return Response.json({ error: "Imagem é obrigatória" }, { status: 400 });
     const newId = generateId();
     db.query('INSERT INTO slides (id, image, title, subtitle, "order") VALUES (?, ?, ?, ?, ?)').run(
       newId, body.image, body.title || null, body.subtitle || null, body.order ?? 0

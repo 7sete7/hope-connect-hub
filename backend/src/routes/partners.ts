@@ -24,8 +24,9 @@ export async function handlePartners(req: Request): Promise<Response> {
   if (req.method === "POST") {
     const body = await req.json();
     const newId = generateId();
-    db.query("INSERT INTO partners (id, name, logo, whatsapp, website) VALUES (?, ?, ?, ?, ?)").run(
-      newId, body.name, body.logo, body.whatsapp || null, body.website || null
+    if (!body.name || !body.logo) return Response.json({ error: "Nome e logo são obrigatórios" }, { status: 400 });
+    db.query("INSERT INTO partners (id, name, logo, whatsapp, instagram, website) VALUES (?, ?, ?, ?, ?, ?)").run(
+      newId, body.name, body.logo, body.whatsapp || null, body.instagram || null, body.website || null
     );
     return Response.json(db.query("SELECT * FROM partners WHERE id = ?").get(newId), { status: 201 });
   }
@@ -34,8 +35,10 @@ export async function handlePartners(req: Request): Promise<Response> {
     const body = await req.json();
     const existing = db.query("SELECT * FROM partners WHERE id = ?").get(id) as any;
     if (!existing) return Response.json({ error: "Não encontrado" }, { status: 404 });
-    db.query("UPDATE partners SET name = ?, logo = ?, whatsapp = ?, website = ? WHERE id = ?").run(
-      body.name ?? existing.name, body.logo ?? existing.logo, body.whatsapp ?? existing.whatsapp, body.website ?? existing.website, id
+    db.query("UPDATE partners SET name = ?, logo = ?, whatsapp = ?, instagram = ?, website = ? WHERE id = ?").run(
+      body.name ?? existing.name, body.logo ?? existing.logo,
+      (body.whatsapp ?? existing.whatsapp) || null, (body.instagram ?? existing.instagram) || null, (body.website ?? existing.website) || null,
+      id
     );
     return Response.json(db.query("SELECT * FROM partners WHERE id = ?").get(id));
   }
