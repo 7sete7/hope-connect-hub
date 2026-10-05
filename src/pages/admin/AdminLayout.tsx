@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { LayoutDashboard, Image, CalendarDays, Handshake, Info, Phone, Palette, LogOut, Heart, Settings } from 'lucide-react';
+import { LayoutDashboard, Image, CalendarDays, Handshake, Info, Phone, Palette, LogOut, Settings, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const adminLinks = [
@@ -11,6 +11,7 @@ const adminLinks = [
   { to: '/admin/parceiros', label: 'Parceiros', icon: Handshake },
   { to: '/admin/quem-somos', label: 'Quem Somos', icon: Info },
   { to: '/admin/contato', label: 'Contato', icon: Phone },
+  { to: '/admin/mensagens', label: 'Mensagens', icon: Mail },
   { to: '/admin/cores', label: 'Cores', icon: Palette },
 ];
 
@@ -28,9 +29,7 @@ export default function AdminLayout() {
       <aside className="w-64 bg-card border-r border-border flex flex-col shrink-0">
         <div className="p-4 border-b border-border">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center">
-              <Heart className="w-4 h-4 text-primary-foreground" />
-            </div>
+            <img src="/logo-mark.jpg" alt="" className="w-9 h-9 rounded-full" />
             <span className="font-display font-bold text-foreground">Admin</span>
           </div>
         </div>

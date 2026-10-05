@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Heart, Mail, Phone, MapPin, Lock, Facebook, Instagram, MessageCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Lock, Instagram, MessageCircle } from 'lucide-react';
 import { useSite } from '@/contexts/SiteContext';
 
 export function Footer() {
@@ -14,17 +14,12 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shrink-0">
-                <Heart className="w-5 h-5 text-primary-foreground" />
-              </div>
+              <img src="/logo-mark.jpg" alt="" className="w-12 h-12 rounded-full shrink-0" />
               <span className="font-bold text-lg">{siteTitle}</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">{tagline}</p>
             <div className="flex gap-3 mt-6">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+              <a href="https://instagram.com/empresariasentreellasoficial" aria-label="Instagram" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
                 <Instagram className="w-4 h-4" />
               </a>
             </div>

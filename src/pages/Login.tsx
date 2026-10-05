@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, LogIn } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -38,9 +38,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-muted/50 px-4">
       <Card className="w-full max-w-md shadow-xl border-0">
         <CardHeader className="text-center pb-2">
-          <div className="mx-auto w-14 h-14 rounded-full gradient-primary flex items-center justify-center mb-4">
-            <Heart className="w-7 h-7 text-primary-foreground" />
-          </div>
+          <img src="/logo-full.jpg" alt="Entre Ellas Oficial" className="mx-auto w-40 mb-4" />
           <CardTitle className="font-display text-2xl">Área Administrativa</CardTitle>
           <p className="text-sm text-muted-foreground mt-1">Acesso restrito a administradores</p>
         </CardHeader>

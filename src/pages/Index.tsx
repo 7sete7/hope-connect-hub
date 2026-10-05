@@ -29,8 +29,20 @@ export default function Index() {
 
   return (
     <div>
+      {/* Banner principal (imagem já contém logo e contatos; exibida inteira, sem corte) */}
+      <section className="pt-[60px] bg-[#f9f6ef]">
+        <h1 className="sr-only">{data.general.siteTitle}</h1>
+        <img
+          src="/BannerGrande.jpeg"
+          alt="Entre Ellas Oficial — Instagram @empresariasentreellasoficial, WhatsApp (51) 99760-2948"
+          className="block w-full max-w-[1600px] mx-auto h-auto"
+          width={1600}
+          height={595}
+        />
+      </section>
+
       {/* Hero Carousel */}
-      <section className="relative h-[85vh] min-h-[500px] overflow-hidden bg-foreground">
+      <section className="relative h-[70vh] min-h-[460px] overflow-hidden bg-foreground">
         <AnimatePresence mode="wait">
           {slides.length > 0 && (
             <motion.div
@@ -62,9 +74,9 @@ export default function Index() {
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
                 {slides[currentSlide]?.title && (
-                  <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 max-w-3xl leading-tight">
+                  <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-4 max-w-3xl leading-tight">
                     {slides[currentSlide].title}
-                  </h1>
+                  </h2>
                 )}
                 {slides[currentSlide]?.subtitle && (
                   <p className="text-lg sm:text-xl text-white/80 max-w-xl">

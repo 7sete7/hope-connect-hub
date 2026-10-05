@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Menu, X, Heart } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useLocation } from 'react-router-dom';
@@ -26,7 +26,7 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const hasBanner = ['/', '/quem-somos', '/eventos', '/parceiros', '/contato'].includes(location.pathname);
+  const hasBanner = ['/quem-somos', '/eventos', '/parceiros', '/contato'].includes(location.pathname);
   const showTransparent = hasBanner && !scrolled && !mobileOpen;
 
   return (
@@ -40,9 +40,11 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center transition-transform group-hover:scale-110">
-              <Heart className="w-5 h-5 text-primary-foreground" />
-            </div>
+            <img
+              src="/logo-mark.jpg"
+              alt={data.general.siteTitle}
+              className="w-11 h-11 rounded-full shadow-sm transition-transform group-hover:scale-110"
+            />
             <span
               className={`font-bold text-lg hidden sm:block transition-colors ${
                 showTransparent ? 'text-white' : 'text-foreground'
