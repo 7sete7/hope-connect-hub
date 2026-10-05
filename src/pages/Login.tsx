@@ -46,7 +46,7 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@cooperativa.com" required />
+              <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="seu@email.com" autoCapitalize="none" autoCorrect="off" required />
             </div>
             <div>
               <Label htmlFor="password">Senha</Label>
@@ -57,9 +57,6 @@ export default function Login() {
               {loading ? 'Entrando...' : 'Entrar'}
             </Button>
           </form>
-          <p className="text-xs text-muted-foreground text-center mt-4">
-            Demo: admin@cooperativa.com / admin123
-          </p>
         </CardContent>
       </Card>
     </div>

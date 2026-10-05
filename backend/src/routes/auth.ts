@@ -15,7 +15,8 @@ export async function handleAuth(req: Request): Promise<Response> {
     return Response.json({ error: "Email e senha são obrigatórios" }, { status: 400 });
   }
 
-  const user = db.query("SELECT * FROM users WHERE email = ?").get(email) as any;
+  // Email sem diferenciar maiúsculas/espaços (teclados de celular capitalizam e autocompletam com espaço)
+  const user = db.query("SELECT * FROM users WHERE lower(email) = lower(?)").get(String(email).trim()) as any;
   if (!user) {
     return Response.json({ error: "Credenciais inválidas" }, { status: 401 });
   }

@@ -129,6 +129,13 @@ O `server-start.sh`:
 
 Definidas por `ADMIN_EMAIL` / `ADMIN_PASSWORD` no primeiro start. Em desenvolvimento, sem essas variáveis, o padrão é `admin@cooperativa.com` / `admin123`.
 
+Para trocar a senha depois (o `.env` só vale no primeiro start):
+
+```bash
+ssh rocky@147.15.19.64
+sudo docker exec entreellas-backend-1 bun run reset-password.ts admin@entreellasoficial.com.br 'NovaSenha'
+```
+
 ## Variáveis de Ambiente
 
 ### Backend
