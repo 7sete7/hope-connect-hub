@@ -1,10 +1,12 @@
 # Frontend Dockerfile
-FROM oven/bun:1 AS build
+# O build roda na arquitetura da máquina que builda (o resultado é só HTML/JS/CSS);
+# apenas a imagem final do nginx segue a plataforma alvo (linux/amd64 no servidor).
+FROM --platform=$BUILDPLATFORM oven/bun:1 AS build
 WORKDIR /app
 
 # Install dependencies
 COPY package.json bun.lock* ./
-RUN bun install --frozen-lockfile || bun install
+RUN bun install --frozen-lockfile
 
 # Copy source and build
 COPY . .

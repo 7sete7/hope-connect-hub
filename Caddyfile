@@ -1,0 +1,23 @@
+# Entre Ellas — HTTPS automático (Let's Encrypt).
+# Requer DNS A de entreellasoficial.com.br e www apontando para o servidor.
+#
+# No servidor compartilhado, o server-start.sh insere este arquivo no Caddyfile do
+# sidekick (entre marcadores) e recarrega aquele Caddy. "entreellas-web" é o alias
+# do nosso frontend na rede do proxy (no compose standalone, o alias é o próprio serviço).
+
+entreellasoficial.com.br {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+
+	reverse_proxy entreellas-web:80
+}
+
+www.entreellasoficial.com.br {
+	redir https://entreellasoficial.com.br{uri} permanent
+}

@@ -1,0 +1,11 @@
+node_modules
+dist
+backend
+.git
+*.local
+*.tar.gz
+
+# Segredos ficam fora das imagens
+.env
+.env.*
+!.env.example

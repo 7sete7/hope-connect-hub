@@ -1,4 +1,4 @@
-.PHONY: dev dev-backend dev-frontend build up down migrate seed logs clean
+.PHONY: dev dev-backend dev-frontend deploy build up down migrate seed logs clean
 
 # Development - run backend and frontend in parallel
 dev: dev-backend dev-frontend
@@ -9,18 +9,22 @@ dev-backend:
 dev-frontend:
 	bun run dev
 
+# Produção: builda, envia e sobe no servidor compartilhado (ver deploy.sh)
+deploy:
+	./deploy.sh --start
+
 # Docker commands
 build:
-	docker-compose build
+	docker compose build
 
 up:
-	docker-compose up -d
+	docker compose up -d
 
 down:
-	docker-compose down
+	docker compose down
 
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 
 # Database commands
 migrate:
@@ -29,7 +33,7 @@ migrate:
 seed:
 	cd backend && bun run seed.ts
 
-# Cleanup
+# Cleanup (APAGA banco, uploads e certificados)
 clean:
-	docker-compose down -v
+	docker compose down -v
 	rm -rf backend/data backend/uploads

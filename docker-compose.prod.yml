@@ -1,0 +1,38 @@
+# Servidor compartilhado: copiado como docker-compose.yml pelo deploy.sh.
+# As imagens chegam prontas (images.tar.gz) e as portas 80/443 são do Caddy do sidekick:
+# o frontend entra na rede dele com o alias "entreellas-web", referenciado no Caddyfile.
+services:
+  frontend:
+    image: entreellas-frontend:latest
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      default:
+      shared-proxy:
+        aliases:
+          - entreellas-web
+    restart: unless-stopped
+
+  backend:
+    image: entreellas-backend:latest
+    environment:
+      - PORT=3001
+      - JWT_SECRET=${JWT_SECRET:?Defina JWT_SECRET no arquivo .env}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@entreellasoficial.com.br}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:?Defina ADMIN_PASSWORD no arquivo .env}
+      - DB_PATH=/app/data/cooperativa.sqlite
+      - UPLOAD_DIR=/app/uploads
+    volumes:
+      - db-data:/app/data
+      - uploads:/app/uploads
+    restart: unless-stopped
+
+networks:
+  shared-proxy:
+    external: true
+    name: ${PROXY_NETWORK:-sidekick_default}
+
+volumes:
+  db-data:
+  uploads:

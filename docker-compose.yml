@@ -1,33 +1,54 @@
-version: "3.8"
-
+# Uso local / servidor dedicado: builda as imagens e sobe com Caddy próprio (80/443).
+# No servidor compartilhado (sidekick) quem roda é o docker-compose.prod.yml, via deploy.sh.
 services:
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - frontend
+    restart: unless-stopped
+
+  # nginx com o site; encaminha /api e /uploads para o backend
   frontend:
+    image: entreellas-frontend:latest
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "80:80"
     depends_on:
       - backend
-    environment:
-      - VITE_API_URL=/api
+    networks:
+      default:
+        aliases:
+          - entreellas-web
+    restart: unless-stopped
 
+  # Sem porta publicada: só é acessado pelo nginx do frontend
   backend:
+    image: entreellas-backend:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "3001:3001"
     environment:
       - PORT=3001
-      - JWT_SECRET=${JWT_SECRET:-cooperativa-secret-change-in-production}
+      - JWT_SECRET=${JWT_SECRET:?Defina JWT_SECRET no arquivo .env}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@entreellasoficial.com.br}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:?Defina ADMIN_PASSWORD no arquivo .env}
       - DB_PATH=/app/data/cooperativa.sqlite
       - UPLOAD_DIR=/app/uploads
-      - CORS_ORIGINS=http://localhost,http://localhost:80
     volumes:
       - db-data:/app/data
       - uploads:/app/uploads
+    restart: unless-stopped
 
 volumes:
   db-data:
   uploads:
+  caddy-data:
+  caddy-config:
