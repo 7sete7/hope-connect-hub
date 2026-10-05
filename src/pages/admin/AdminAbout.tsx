@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { ImageInput } from '@/components/admin/ImageInput';
+import { AboutContent } from '@/types';
 
 export default function AdminAbout() {
   const { data, refresh } = useSite();
@@ -20,11 +21,15 @@ export default function AdminAbout() {
     toast({ title: 'Conteúdo atualizado!' });
   };
 
-  const sections = [
-    { label: 'Introdução', textKey: 'intro' as const, imageKey: 'introImage' as const },
-    { label: 'Missão', textKey: 'mission' as const, imageKey: 'missionImage' as const },
-    { label: 'Visão', textKey: 'vision' as const, imageKey: 'visionImage' as const },
-    { label: 'Valores', textKey: 'values' as const, imageKey: 'valuesImage' as const },
+  const sections: { label: string; hint?: string; textKey: keyof AboutContent; imageKey?: keyof AboutContent }[] = [
+    { label: 'Quem Somos', textKey: 'intro', imageKey: 'introImage' },
+    { label: 'Nosso Objetivo', textKey: 'mission', imageKey: 'missionImage' },
+    { label: 'O Que Fazemos — texto', textKey: 'vision' },
+    {
+      label: 'O Que Fazemos — itens',
+      hint: 'Um item por linha, no formato "Título: descrição". Cada linha vira um card.',
+      textKey: 'values',
+    },
   ];
 
   return (
@@ -37,22 +42,25 @@ export default function AdminAbout() {
       <div className="flex flex-col gap-8">
         {sections.map(section => (
           <div key={section.textKey} className="bg-card rounded-xl p-6 shadow-sm">
-            <h3 className="font-display font-semibold text-lg text-foreground mb-4">{section.label}</h3>
+            <h3 className="font-display font-semibold text-lg text-foreground mb-1">{section.label}</h3>
+            <p className="text-sm text-muted-foreground mb-4">{section.hint ?? 'Deixe uma linha em branco entre os parágrafos.'}</p>
             <div className="flex flex-col gap-3">
               <div>
                 <Label>Texto</Label>
                 <Textarea
                   value={form[section.textKey]}
                   onChange={e => setForm(f => ({ ...f, [section.textKey]: e.target.value }))}
-                  rows={4}
+                  rows={7}
                   className="mt-1"
                 />
               </div>
-              <ImageInput
-                label="Imagem"
-                value={form[section.imageKey]}
-                onChange={url => setForm(f => ({ ...f, [section.imageKey]: url }))}
-              />
+              {section.imageKey && (
+                <ImageInput
+                  label="Imagem"
+                  value={form[section.imageKey]}
+                  onChange={url => setForm(f => ({ ...f, [section.imageKey!]: url }))}
+                />
+              )}
             </div>
           </div>
         ))}

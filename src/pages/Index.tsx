@@ -1,15 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ArrowRight, MapPin } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight, MapPin, MessageCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ScrollFadeIn } from '@/components/ScrollFadeIn';
 import { PartnersCarousel } from '@/components/PartnersCarousel';
 import { useSite } from '@/contexts/SiteContext';
+import { formatBrPhone } from '@/lib/utils';
 
 export default function Index() {
   const { data } = useSite();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const slides = data.slides.sort((a, b) => a.order - b.order);
+  const slides = [...data.slides].sort((a, b) => a.order - b.order);
+  const whatsappDigits = data.contact.whatsappNumber.replace(/\D/g, '');
 
   const nextSlide = useCallback(() => {
     setCurrentSlide(prev => (prev + 1) % slides.length);
@@ -29,20 +31,10 @@ export default function Index() {
 
   return (
     <div>
-      {/* Banner principal (imagem já contém logo e contatos; exibida inteira, sem corte) */}
-      <section className="pt-[60px] bg-[#f9f6ef]">
-        <h1 className="sr-only">{data.general.siteTitle}</h1>
-        <img
-          src="/BannerGrande.jpeg"
-          alt="Entre Ellas Oficial — Instagram @empresariasentreellasoficial, WhatsApp (51) 99760-2948"
-          className="block w-full max-w-[1600px] mx-auto h-auto"
-          width={1600}
-          height={595}
-        />
-      </section>
+      <h1 className="sr-only">{data.general.siteTitle}</h1>
 
-      {/* Hero Carousel */}
-      <section className="relative h-[70vh] min-h-[460px] overflow-hidden bg-foreground">
+      {/* Hero Carousel (abaixo do cabeçalho fixo) */}
+      <section className="relative mt-[60px] h-[60vh] sm:h-[70vh] min-h-[420px] overflow-hidden bg-foreground">
         <AnimatePresence mode="wait">
           {slides.length > 0 && (
             <motion.div
@@ -53,12 +45,28 @@ export default function Index() {
               transition={{ duration: 0.7 }}
               className="absolute inset-0"
             >
-              <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${slides[currentSlide]?.image})` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
-              </div>
+              {slides[currentSlide]?.title || slides[currentSlide]?.subtitle ? (
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${slides[currentSlide]?.image})` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+                </div>
+              ) : (
+                // Slide só de imagem (ex.: banner com texto próprio): exibida inteira, sem escurecer,
+                // sobre um fundo desfocado da mesma imagem que preenche as sobras
+                <div className="absolute inset-0 bg-[#f9f6ef]">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center blur-2xl scale-110"
+                    style={{ backgroundImage: `url(${slides[currentSlide]?.image})` }}
+                  />
+                  <img
+                    src={slides[currentSlide]?.image}
+                    alt={data.general.siteTitle}
+                    className="absolute inset-0 w-full h-full object-contain"
+                  />
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -117,12 +125,12 @@ export default function Index() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <ScrollFadeIn>
               {data.general.introTitle && (
-                <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-8 leading-tight">
                   {data.general.introTitle}
                 </h2>
               )}
               {data.general.introText && (
-                <p className="text-xl sm:text-2xl lg:text-3xl leading-relaxed text-muted-foreground whitespace-pre-line">
+                <p className="text-lg sm:text-xl lg:text-2xl leading-relaxed text-muted-foreground whitespace-pre-line">
                   {data.general.introText}
                 </p>
               )}
@@ -138,10 +146,10 @@ export default function Index() {
           <ScrollFadeIn>
             <div className="mb-12 text-center">
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
-                Próximos Eventos
+                Nossos Eventos
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Fique por dentro das nossas ações e participe
+                Cada evento do Entre Ellas Oficial é pensado para oferecer mais do que um encontro.
               </p>
               <div className="w-16 h-1 rounded-full bg-primary mt-4 mx-auto" />
             </div>
@@ -203,6 +211,50 @@ export default function Index() {
 
       {/* Partners Carousel */}
       <PartnersCarousel />
+
+      {/* Faça parte */}
+      <section className="py-24 bg-background">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <ScrollFadeIn>
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Faça Parte</h2>
+            <div className="w-16 h-1 rounded-full bg-primary mb-8 mx-auto" />
+            <div className="text-muted-foreground text-lg leading-relaxed space-y-4">
+              <p>
+                O Entre Ellas Oficial foi criado para mulheres que querem movimentar seus negócios, compartilhar
+                experiências, aprender, apresentar seu trabalho e construir novas possibilidades.
+              </p>
+              <p className="text-foreground font-semibold">
+                Se você é uma mulher empreendedora, venha fazer parte do Entre Ellas Oficial.
+              </p>
+              <p>
+                Conheça nossa proposta, participe das nossas ações e encontre um espaço para apresentar seu trabalho,
+                ampliar sua rede de contatos e estar mais perto de outras profissionais.
+              </p>
+            </div>
+            <p className="text-foreground font-medium mt-10 mb-5">Quer participar ou saber mais? Entre em contato conosco.</p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              {whatsappDigits && (
+                <a
+                  href={`https://wa.me/${whatsappDigits}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold text-accent-foreground bg-accent transition-all hover:opacity-90 hover:shadow-lg"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp: {formatBrPhone(data.contact.whatsappNumber)}
+                </a>
+              )}
+              <Link
+                to="/contato"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold text-primary-foreground bg-primary transition-all hover:opacity-90 hover:shadow-lg"
+              >
+                Entre em contato
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </ScrollFadeIn>
+        </div>
+      </section>
     </div>
   );
 }

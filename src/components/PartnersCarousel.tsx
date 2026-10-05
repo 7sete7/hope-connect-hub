@@ -50,7 +50,7 @@ export function PartnersCarousel() {
               Nossos Parceiros
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Empresas comprometidas com a luta contra o câncer
+              Boas parcerias ampliam possibilidades.
             </p>
             <div className="w-16 h-1 rounded-full bg-primary mt-4 mx-auto" />
           </div>
@@ -134,7 +134,7 @@ export function PartnersCarousel() {
 
           <div className="text-center mt-8">
             <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-2xl p-6 sm:p-8">
-              <p className="text-foreground font-medium">Quer fazer parte dessa causa?</p>
+              <p className="text-foreground font-medium">Quer ser nosso parceiro? Entre em contato conosco.</p>
               <Link
                 to="/contato"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-secondary-foreground bg-secondary transition-all hover:opacity-90 hover:shadow-lg"

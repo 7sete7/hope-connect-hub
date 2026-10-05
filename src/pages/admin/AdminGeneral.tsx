@@ -45,7 +45,7 @@ export default function AdminGeneral() {
               value={form.tagline}
               onChange={e => setForm(f => ({ ...f, tagline: e.target.value }))}
               rows={2}
-              placeholder="Uma frase curta sobre a cooperativa"
+              placeholder="Uma frase curta sobre o Entre Ellas"
               className="mt-2"
             />
           </div>

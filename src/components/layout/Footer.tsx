@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Lock, Instagram, MessageCircle } from 'lucide-react';
 import { useSite } from '@/contexts/SiteContext';
+import { formatBrPhone } from '@/lib/utils';
 
 export function Footer() {
   const { data } = useSite();
@@ -43,7 +44,7 @@ export function Footer() {
                 <li>
                   <a href={`https://wa.me/${whatsappDigits}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-gray-400 hover:text-white text-sm transition-colors">
                     <MessageCircle className="w-4 h-4 flex-shrink-0" />
-                    <span>{contact.whatsappNumber}</span>
+                    <span>{formatBrPhone(contact.whatsappNumber)}</span>
                   </a>
                 </li>
               )}
@@ -75,13 +76,13 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-sm uppercase tracking-wider mb-4 text-gray-300">Faça parte</h3>
             <p className="text-gray-400 text-sm mb-4">
-              Sua empresa pode fazer a diferença. Junte-se à nossa cooperativa.
+              Se você é uma mulher empreendedora, venha fazer parte do Entre Ellas Oficial.
             </p>
             <Link
               to="/contato"
               className="inline-flex items-center px-6 py-3 rounded-full text-sm font-semibold text-primary-foreground bg-primary transition-all hover:opacity-90"
             >
-              Seja Nosso Parceiro
+              Quero participar
             </Link>
           </div>
         </div>

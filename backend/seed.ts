@@ -19,6 +19,7 @@ db.query("INSERT OR IGNORE INTO users (id, email, password_hash) VALUES (?, ?, ?
 
 // Slides
 const slides = [
+  { id: "banner", image: "/BannerGrande.jpeg", title: null, subtitle: null, order: 0 },
   {
     id: "1",
     image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=1600&h=600&fit=crop",
@@ -100,13 +101,13 @@ db.query(
   vision = ?, vision_image = ?, "values" = ?, values_image = ?
   WHERE id = 1`,
 ).run(
-  "O Ser Mulheres de Impacto Entre Ellas é uma rede de mulheres empreendedoras criada para promover conexões, compartilhar conhecimento e gerar novas oportunidades. \nCriamos um espaço onde mulheres podem apresentar seus negócios, trocar experiências, ampliar sua rede de contatos e construir parcerias.",
+  "O Entre Ellas Oficial é um espaço de encontro, participação e desenvolvimento para mulheres que empreendem, trabalham, criam e movimentam seus negócios.\n\nMais do que uma rede de contatos, buscamos proporcionar experiências que aproximem pessoas, estimulem novas ideias e favoreçam o crescimento profissional e empresarial.\n\nPor meio de encontros, conteúdos, eventos e ações colaborativas, abrimos espaço para que cada participante possa apresentar seu trabalho, ampliar sua visibilidade e estabelecer novas conexões.",
   "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=600&h=400&fit=crop",
-  "Nosso objetivo é fortalecer o empreendedorismo feminino criando oportunidades para que mulheres se conectem, aprendam umas com as outras e desenvolvam novos caminhos para seus negócios e projetos.\nPor meio de diferentes ações e experiências, buscamos unir empreendedorismo, conhecimento e relacionamento em torno de temas atuais e relevantes para a comunidade.",
+  "Criar um ambiente que estimule o crescimento de mulheres empreendedoras e profissionais, valorizando seus talentos, suas experiências e seus negócios.\n\nO Entre Ellas Oficial busca aproximar diferentes áreas e trajetórias, incentivar a colaboração e criar momentos que contribuam para o desenvolvimento pessoal e profissional de quem participa.\n\nNossa proposta é transformar encontros em experiências que possam gerar novas ideias, visibilidade, aprendizado e possibilidades para os negócios.",
   "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&h=400&fit=crop",
-  "Ser uma rede de referência na conexão e no fortalecimento de mulheres, criando oportunidades de crescimento, colaboração e desenvolvimento por meio de experiências, conhecimento e empreendedorismo.",
+  "O Entre Ellas Oficial é voltado especialmente para mulheres empreendedoras que desejam apresentar seus negócios, desenvolver novas habilidades, ampliar sua presença profissional e encontrar novas possibilidades para crescer.\n\nCriamos uma programação que valoriza a participação das empreendedoras e coloca seus negócios, conhecimentos e experiências em evidência.",
   "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=600&h=400&fit=crop",
-  "Conexão: Acreditamos que boas relações podem gerar novas ideias, parcerias e oportunidades.\nColaboração: Valorizamos a troca de experiências, conhecimentos e apoio entre mulheres, profissionais e empresas.\nEmpreendedorismo: Incentivamos mulheres a desenvolverem seus projetos, apresentarem seus negócios e ampliarem suas possibilidades.\nConhecimento: Promovemos espaços de aprendizado, desenvolvimento e compartilhamento de experiências.\nValorização das mulheres: Buscamos criar ambientes onde mulheres possam se expressar, fortalecer suas trajetórias e ocupar novos espaços.",
+  "Encontros e networking: Promovemos encontros para aproximar profissionais de diferentes áreas, favorecendo a troca de experiências e a formação de novas relações profissionais.\nWorkshops: Criamos momentos de aprendizado sobre temas que contribuem para o desenvolvimento dos negócios e das profissionais.\nEventos: Realizamos eventos com assuntos relevantes para as mulheres e para a sociedade, combinando conteúdo, convivência e participação.\nExposições: As associadas contam com espaço para apresentar seus produtos, serviços e marcas, ampliando sua visibilidade e aproximando seus negócios do público.\nParcerias: Desenvolvemos ações em parceria com empresas, profissionais e instituições que possam agregar conhecimento, estrutura e novas possibilidades às iniciativas do Entre Ellas Oficial.",
   "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=600&h=400&fit=crop",
 );
 
@@ -114,7 +115,7 @@ db.query(
 db.query("UPDATE contact_settings SET whatsapp_number = ?, email = ?, phone = ?, address = ? WHERE id = 1").run(
   "5551997602948",
   "comunidadeentreellas@gmail.com",
-  "5551997602948",
+  "(51) 99760-2948",
   "Av. Ely Corrêa - Gravataí, RS",
 );
 
@@ -122,10 +123,11 @@ db.query("UPDATE contact_settings SET whatsapp_number = ?, email = ?, phone = ?,
 db.query('UPDATE site_colors SET "primary" = ?, secondary = ?, accent = ? WHERE id = 1').run("263 83% 58%", "330 81% 60%", "160 84% 39%");
 
 // General settings
-db.query("UPDATE general_settings SET site_title = ?, tagline = ?, intro_text = ? WHERE id = 1").run(
-  "Ser Mulher de Impacto entre Ellas",
-  "Juntas podemos fazer impacto",
-  "Uma rede que aproxima mulheres empreendedoras, profissionais, empresas e ideias por meio de encontros, experiências e novas conexões.\\nConheça o Ser Mulheres de Impacto Entre Ellas",
+db.query("UPDATE general_settings SET site_title = ?, tagline = ?, intro_title = ?, intro_text = ? WHERE id = 1").run(
+  "Entre Ellas Oficial",
+  "Conexões que geram conhecimento, oportunidades e novas possibilidades.",
+  "Conectar mulheres. Compartilhar conhecimento. Criar oportunidades.",
+  "Uma rede de mulheres que acredita na força das conexões, da troca de experiências e do conhecimento.\n\nCriamos encontros, workshops, eventos, exposições e parcerias que aproximam pessoas, negócios e novas possibilidades.\n\nConheça o Entre Ellas Oficial.",
 );
 
 console.log("✅ Seed concluído!");

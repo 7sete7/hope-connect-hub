@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { ScrollFadeIn } from '@/components/ScrollFadeIn';
 import { PageBanner } from '@/components/PageBanner';
 import { useSite } from '@/contexts/SiteContext';
+import { formatBrPhone } from '@/lib/utils';
 import { api } from '@/services/api';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
@@ -32,7 +33,7 @@ export default function Contact() {
     {
       icon: MessageCircle,
       label: 'WhatsApp',
-      value: contact.whatsappNumber,
+      value: formatBrPhone(contact.whatsappNumber),
       href: `https://wa.me/+${contact.whatsappNumber.replace(/\D/g, '')}`,
       color: 'bg-accent text-accent-foreground',
     },
@@ -91,9 +92,9 @@ export default function Contact() {
             {/* Left: Info */}
             <ScrollFadeIn direction="left">
               <div>
-                <h2 className="text-3xl font-bold text-foreground mb-3">Fale Conosco</h2>
+                <h2 className="text-3xl font-bold text-foreground mb-3">Quer participar ou saber mais?</h2>
                 <p className="text-muted-foreground text-lg mb-10 leading-relaxed">
-                  Estamos sempre prontos para ouvir você. Envie sua mensagem ou entre em contato diretamente.
+                  Entre em contato conosco.
                 </p>
 
                 <div className="flex flex-col gap-4">

@@ -13,10 +13,23 @@ export default function Events() {
       <section className="relative py-20 gradient-primary">
         <div className="container mx-auto px-4 text-center">
           <h1 className="font-display text-4xl md:text-5xl font-bold text-primary-foreground mb-4">
-            Eventos
+            Nossos Eventos
           </h1>
           <p className="text-primary-foreground/80 text-lg max-w-xl mx-auto">
-            Acompanhe nossas ações e participe
+            Cada evento do Entre Ellas Oficial é pensado para oferecer mais do que um encontro.
+          </p>
+        </div>
+      </section>
+
+      <section className="pt-20 bg-background">
+        <div className="max-w-3xl mx-auto px-4 text-center text-muted-foreground text-lg leading-relaxed space-y-4">
+          <p>
+            Criamos experiências que combinam diferentes formatos, de acordo com a proposta de cada atividade:
+            conteúdo, participação, apresentação de marcas, convivência, troca de experiências e relacionamento.
+          </p>
+          <p>
+            Os temas são escolhidos de acordo com assuntos relevantes para o momento, para o público e para a
+            comunidade, buscando sempre uma abordagem leve, interessante e participativa.
           </p>
         </div>
       </section>

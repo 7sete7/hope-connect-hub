@@ -87,7 +87,7 @@ function SitePreview({ primary, secondary, accent }: { primary: string; secondar
           <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: p }}>
             <Heart className="w-3.5 h-3.5 text-white" />
           </div>
-          <span className="text-xs font-bold text-foreground">Cooperativa</span>
+          <span className="text-xs font-bold text-foreground">Entre Ellas</span>
         </div>
         <div className="flex gap-3">
           {['Início', 'Eventos', 'Parceiros'].map(t => (
@@ -199,7 +199,7 @@ function SitePreview({ primary, secondary, accent }: { primary: string; secondar
           <div className="w-4 h-4 rounded flex items-center justify-center" style={{ background: p }}>
             <Heart className="w-2 h-2 text-white" />
           </div>
-          <span className="text-[8px] text-gray-400">Cooperativa Vida</span>
+          <span className="text-[8px] text-gray-400">Entre Ellas Oficial</span>
         </div>
         <div className="flex gap-1">
           <div className="w-4 h-4 rounded-full bg-white/10" />
