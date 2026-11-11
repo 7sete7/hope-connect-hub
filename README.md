@@ -161,3 +161,7 @@ sudo docker exec entreellas-backend-1 bun run reset-password.ts admin@entreellas
 - **Backend:** Bun, Bun.serve, bun:sqlite, jose (JWT)
 - **Banco:** SQLite (WAL mode)
 - **Deploy:** Docker, nginx
+
+## Licença
+
+Distribuído sob a licença MIT. Veja [LICENSE](LICENSE).

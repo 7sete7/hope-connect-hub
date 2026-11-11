@@ -1,6 +1,7 @@
 {
   "name": "cooperativa-backend",
   "version": "1.0.0",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
